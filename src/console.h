@@ -31,12 +31,18 @@
     #define LEFT 75
     #define RIGHT 77
     #define DEL 83
+    #define UP 72
+    #define DOWN 80
+    #define SPACE 32
 #elif defined(OS_UNIX)
     #define CLEAR_LINE "\33[2K"
     #define ENTER 10
     #define BACKSPACE 127
+    #define SPACE 32
     #define LEFT 68
     #define RIGHT 67
+    #define UP 65
+    #define DOWN 66
     #define DEL 51
 #endif
     #define TAB 9
@@ -49,13 +55,13 @@
  */
 int _getch() {
     int ch;
-    struct termios oldt, newt;
-    tcgetattr( STDIN_FILENO, &oldt );
-    newt = oldt;
-    newt.c_lflag &= ~( ICANON | ECHO );
-    tcsetattr( STDIN_FILENO, TCSANOW, &newt );
+    struct termios old_termios, new_termios;
+    tcgetattr( STDIN_FILENO, &old_termios );
+    new_termios = old_termios;
+    new_termios.c_lflag &= ~(ICANON | ECHO );
+    tcsetattr( STDIN_FILENO, TCSANOW, &new_termios );
     ch = getchar();
-    tcsetattr( STDIN_FILENO, TCSANOW, &oldt );
+    tcsetattr( STDIN_FILENO, TCSANOW, &old_termios );
     return ch;
 }
 #endif
@@ -95,17 +101,16 @@ std::ostream& white(std::ostream& os) {
  *
  * @return Y position of terminal cursor.
  */
-int cursorY() {
+int cursor_y_pos() {
 #if defined(OS_WINDOWS)
     CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
     return info.dwCursorPosition.Y;
 #elif defined(OS_UNIX)
-    char buf[30]={0};
-    int i, pow;
+    char buf[30] = {0};
+    int i, pow, y = 0;
     char ch;
     struct termios term, restore;
-    int y = 0;
 
     tcgetattr(0, &term);
     tcgetattr(0, &restore);
@@ -119,8 +124,8 @@ int cursorY() {
         buf[i] = ch;
     }
 
-    for (i-- , pow = 1; buf[i] != '['; i--, pow *= 10) {
-        y += ( buf[i] - '0' ) * pow;
+    for (i--, pow = 1; buf[i] != '['; i--, pow *= 10) {
+        y += (buf[i] - '0') * pow;
     }
 
     tcsetattr(0, TCSANOW, &restore);
@@ -134,14 +139,14 @@ int cursorY() {
  * @param x Position to move.
  * @return void.
  */
-void gotoX(size_t x) {
+void goto_x(size_t x) {
 #if defined(OS_WINDOWS)
     COORD xy;
     xy.X = x - 1;
     xy.Y = cursorY();
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), xy);
 #elif defined(OS_UNIX)
-    printf("\033[%d;%dH", cursorY(), (int)x);
+    printf("\033[%d;%dH", cursor_y_pos(), (int)x);
 #endif
 }
 

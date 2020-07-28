@@ -5,4 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
 
-add_executable(auto_complete main.cpp predict.h console.h)
+file(GLOB_RECURSE HEADERS src/**.h)
+file(GLOB_RECURSE SOURCES src/*.cpp)
+
+add_executable(auto_complete ${HEADERS} ${SOURCES})

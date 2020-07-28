@@ -4,7 +4,6 @@
 
 #include "predict.h"
 
-// TODO check orthography
 // TODO dictionary from file
 
 int main() {
@@ -18,5 +17,6 @@ int main() {
         std::string command = input(dict);
         std::cout << command << std::endl;
     }
+
     return 0;
 }
