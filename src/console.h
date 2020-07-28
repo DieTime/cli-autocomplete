@@ -143,7 +143,7 @@ void goto_x(size_t x) {
 #if defined(OS_WINDOWS)
     COORD xy;
     xy.X = x - 1;
-    xy.Y = cursorY();
+    xy.Y = cursor_y_pos();
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), xy);
 #elif defined(OS_UNIX)
     printf("\033[%d;%dH", cursor_y_pos(), (int)x);
