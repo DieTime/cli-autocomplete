@@ -4,6 +4,9 @@
 
 #include "predict.h"
 
+// TODO check orthography
+// TODO dictionary from file
+
 int main() {
     std::vector<std::string> dict = {
         "push",
