@@ -1,3 +1,4 @@
 cmake-build-debug-windows
 cmake-build-debug-linux
 build
+.idea
