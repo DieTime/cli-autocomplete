@@ -16,7 +16,7 @@ int main() {
 
     while (true) {
         std::string command = input(dict);
-        std::cout << command << std::endl;
+        std::cout << std::endl << command << std::endl;
     }
 
     return 0;

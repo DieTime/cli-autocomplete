@@ -128,15 +128,16 @@ std::ostream& white(std::ostream& os) {
  *
  * @return Y position of terminal cursor.
  */
-int cursor_y_pos() {
+short cursor_y_pos() {
 #if defined(OS_WINDOWS)
     CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
     return info.dwCursorPosition.Y;
 #elif defined(OS_UNIX)
-    char ch, buf[30] = {0};
     struct termios term, restore;
-    int y = 0, i = 0, pow = 1;
+    char ch, buf[30] = {0};
+    int i = 0, pow = 1;
+    short y = 0;
 
     tcgetattr(0, &term);
     tcgetattr(0, &restore);
@@ -168,19 +169,18 @@ int cursor_y_pos() {
 }
 
 /**
- * Move terminal cursor at position x
+ * Move terminal cursor at position x and y
  *
- * @param x Position to move.
+ * @param x X position to move.
+ * @param x Y position to move.
  * @return void.
  */
-void goto_x(size_t x) {
+void goto_xy(short x, short y) {
 #if defined(OS_WINDOWS)
-    COORD xy;
-    xy.X = short(x) - short(1);
-    xy.Y = short(cursor_y_pos());
+    COORD xy {--x, y};
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), xy);
 #elif defined(OS_UNIX)
-    printf("\033[%d;%dH", cursor_y_pos(), (int)x);
+    printf("\033[%d;%dH", y, x);
 #endif
 }
 

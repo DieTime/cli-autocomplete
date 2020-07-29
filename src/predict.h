@@ -133,9 +133,10 @@ void print_with_prompts(const std::string& buffer, const std::vector<std::string
  * @return user input.
  */
 std::string input(std::vector<std::string> dict) {
-    std::string buffer; // User input
-    size_t offset = 0;  // Cursor offset from the end of the buffer
-    size_t number = 0;  // Hint number
+    std::string buffer;       // User input
+    size_t offset = 0;        // Cursor offset from the end of the buffer
+    size_t number = 0;        // Hint number
+    short y = cursor_y_pos(); // Get Y cursor position in terminal
 
     // Ignore key codes
     #if defined(OS_WINDOWS)
@@ -150,7 +151,6 @@ std::string input(std::vector<std::string> dict) {
 
         // Return buffer if ENTER was pressed
         if (ch == ENTER) {
-            std::cout << std::endl;
             return buffer;
         }
 
@@ -169,7 +169,7 @@ std::string input(std::vector<std::string> dict) {
             }
             std::cout << clear_line;
             print_with_prompts(buffer, dict, number);
-            goto_x(buffer.length() - offset + 1);
+            goto_xy(short(buffer.length() - offset + 1), y);
         }
         
         // Apply prediction if TAB was pressed
@@ -208,11 +208,11 @@ std::string input(std::vector<std::string> dict) {
         switch (_getch()) {
             case LEFT:
                 offset = (offset < buffer.length()) ? offset + 1 : buffer.length();
-                goto_x(buffer.length() - offset + 1);
+                goto_xy(short(buffer.length() - offset + 1), y);
                 break;
             case RIGHT:
                 offset = (offset > 0) ? offset - 1 : 0;
-                goto_x(buffer.length() - offset + 1);
+                goto_xy(short(buffer.length() - offset + 1), y);
                 break;
             case UP:
                 number = number + 1;
@@ -233,7 +233,7 @@ std::string input(std::vector<std::string> dict) {
                     }
                     std::cout << clear_line;
                     print_with_prompts(buffer, dict, number);
-                    goto_x(buffer.length() - offset + 1);
+                    goto_xy(short(buffer.length() - offset + 1), y);
                 }
             default:
                 break;
@@ -243,7 +243,7 @@ std::string input(std::vector<std::string> dict) {
         else if (!std::count(ignore_keys.begin(), ignore_keys.end(), ch)) {
             buffer.insert(buffer.end() - offset, (char)ch);
             print_with_prompts(buffer, dict, number);
-            goto_x(buffer.length() - offset + 1);
+            goto_xy(short(buffer.length() - offset + 1), y);
 
             if (ch == SPACE) {
                 number = 0;
