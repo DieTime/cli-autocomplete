@@ -11,6 +11,7 @@ int main() {
         "push",
         "puts",
         "append",
+        "hello",
     };
 
     while (true) {

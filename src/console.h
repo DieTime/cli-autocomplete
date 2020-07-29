@@ -24,7 +24,6 @@
 #include <vector>
 
 #if defined(OS_WINDOWS)
-    #define CLEAR_LINE "\r" + std::string(64, ' ')
     #define ENTER 13
     #define BACKSPACE 8
     #define CTRL_C 3
@@ -35,7 +34,6 @@
     #define DOWN 80
     #define SPACE 32
 #elif defined(OS_UNIX)
-    #define CLEAR_LINE "\33[2K"
     #define ENTER 10
     #define BACKSPACE 127
     #define SPACE 32
@@ -65,6 +63,35 @@ int _getch() {
     return ch;
 }
 #endif
+
+#if defined(OS_WINDOWS)
+/**
+ * Get count of terminal cols
+ *
+ * @return Width of terminal.
+ */
+size_t console_width() {
+    CONSOLE_SCREEN_BUFFER_INFO info;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
+    return size_t(info.dwSize.X - 1);
+}
+#endif
+
+/**
+ * Clear terminal line
+ *
+ * @param os Output stream.
+ * @return input parameter os.
+ */
+std::ostream& clear_line(std::ostream& os) {
+#if defined(OS_WINDOWS)
+    size_t width = console_width();
+    os << '\r' << std::string(width, ' ');
+#elif defined(OS_UNIX)
+    std::cout << "\033[2K";
+#endif
+    return os;
+}
 
 /**
  * Sets the console color to gray
@@ -107,10 +134,9 @@ int cursor_y_pos() {
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
     return info.dwCursorPosition.Y;
 #elif defined(OS_UNIX)
-    char buf[30] = {0};
-    int i, pow, y = 0;
-    char ch;
+    char ch, buf[30] = {0};
     struct termios term, restore;
+    int y = 0, i = 0, pow = 1;
 
     tcgetattr(0, &term);
     tcgetattr(0, &restore);
@@ -119,13 +145,21 @@ int cursor_y_pos() {
 
     write(1, "\033[6n", 4);
 
-    for (i = 0, ch = 0; ch != 'R'; i++) {
+    for (ch = 0; ch != 'R'; i++) {
         read(0, &ch, 1);
         buf[i] = ch;
     }
 
-    for (i--, pow = 1; buf[i] != '['; i--, pow *= 10) {
-        y += (buf[i] - '0') * pow;
+    i -= 2;
+    while (buf[i] != ';') {
+        i -= 1;
+    }
+
+    i -= 1;
+    while (buf[i] != '[') {
+        y = y + ( buf[i] - '0' ) * pow;
+        pow *= 10;
+        i -= 1;
     }
 
     tcsetattr(0, TCSANOW, &restore);
@@ -142,8 +176,8 @@ int cursor_y_pos() {
 void goto_x(size_t x) {
 #if defined(OS_WINDOWS)
     COORD xy;
-    xy.X = x - 1;
-    xy.Y = cursor_y_pos();
+    xy.X = short(x) - short(1);
+    xy.Y = short(cursor_y_pos());
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), xy);
 #elif defined(OS_UNIX)
     printf("\033[%d;%dH", cursor_y_pos(), (int)x);

@@ -83,7 +83,7 @@ static std::vector<size_t> maybe(const std::string& substr, const std::vector<st
  */
 static size_t last_word_pos(const std::string& str) {
     auto last_word = str.rfind(' ');
-    return (last_word == std::string::npos) ? 0 : last_word + 1;
+    return (int(last_word) == -1) ? 0 : last_word + 1;
 }
 
 /**
@@ -118,7 +118,7 @@ void print_with_prompts(const std::string& buffer, const std::vector<std::string
                       << dict[possible_index] << "\"?" << white;
         }
         else {
-             std::cout << CLEAR_LINE;
+             std::cout << clear_line;
         }
     }
 
@@ -139,9 +139,9 @@ std::string input(std::vector<std::string> dict) {
 
     // Ignore key codes
     #if defined(OS_WINDOWS)
-        std::vector<int> ignore({1, 2, 19, 24, 26});
+        std::vector<int> ignore_keys({1, 2, 19, 24, 26});
     #elif defined(OS_UNIX)
-        std::vector<int> ignore({1, 2, 4, 24});
+        std::vector<int> ignore_keys({1, 2, 4, 24});
     #endif
 
     while (true) {
@@ -167,7 +167,7 @@ std::string input(std::vector<std::string> dict) {
             if (!buffer.empty() && buffer.length() - offset >= 1) {
                 buffer.erase(buffer.length() - offset - 1, 1);
             }
-            std::cout << CLEAR_LINE;
+            std::cout << clear_line;
             print_with_prompts(buffer, dict, number);
             goto_x(buffer.length() - offset + 1);
         }
@@ -195,7 +195,7 @@ std::string input(std::vector<std::string> dict) {
             offset = 0;
             number = 0;
 
-            std::cout << CLEAR_LINE;
+            std::cout << clear_line;
             print_with_prompts(buffer, dict, number);
         }
         
@@ -207,7 +207,7 @@ std::string input(std::vector<std::string> dict) {
         #endif
         switch (_getch()) {
             case LEFT:
-                offset = (offset < (int)buffer.length()) ? offset + 1 : (int)buffer.length();
+                offset = (offset < buffer.length()) ? offset + 1 : buffer.length();
                 goto_x(buffer.length() - offset + 1);
                 break;
             case RIGHT:
@@ -231,7 +231,7 @@ std::string input(std::vector<std::string> dict) {
                         buffer.erase(buffer.length() - offset, 1);
                         offset -= 1;
                     }
-                    std::cout << CLEAR_LINE;
+                    std::cout << clear_line;
                     print_with_prompts(buffer, dict, number);
                     goto_x(buffer.length() - offset + 1);
                 }
@@ -240,7 +240,7 @@ std::string input(std::vector<std::string> dict) {
         }
 
         // Add character to buffer if any key was pressed
-        else if (!std::count(ignore.begin(), ignore.end(), ch)) {
+        else if (!std::count(ignore_keys.begin(), ignore_keys.end(), ch)) {
             buffer.insert(buffer.end() - offset, (char)ch);
             print_with_prompts(buffer, dict, number);
             goto_x(buffer.length() - offset + 1);
