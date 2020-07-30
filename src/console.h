@@ -73,7 +73,9 @@ int _getch() {
 size_t console_width() {
     CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
-    return size_t(info.dwSize.X - 1);
+
+    short width = info.dwSize.X - 1;
+    return size_t((width < 0) ? 0 : width);
 }
 #endif
 
