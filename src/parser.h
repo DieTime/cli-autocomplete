@@ -19,8 +19,8 @@ typedef std::map<std::string, std::vector<std::string>> Dictionary;
 std::string trim(std::string_view str) {
     std::string result(str);
 
-    result.erase(0, str.find_first_not_of(" \n\r\t"));
-    result.erase(str.find_last_not_of(" \n\r\t") + 1);
+    result.erase(0, result.find_first_not_of(" \n\r\t"));
+    result.erase(result.find_last_not_of(" \n\r\t") + 1);
 
     return result;
 }
