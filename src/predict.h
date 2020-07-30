@@ -1,6 +1,6 @@
 #pragma once
-#ifndef AUTO_COMPLETE_PREDICT_H
-#define AUTO_COMPLETE_PREDICT_H
+#ifndef CLI_AUTOCOMPLETE_PREDICT_H
+#define CLI_AUTOCOMPLETE_PREDICT_H
 
 #if defined(_WIN32) || defined(_WIN64)
     #define OS_WINDOWS
@@ -15,26 +15,49 @@
 #include <iostream>
 #include <algorithm>
 
+#include "parser.h"
 #include "console.h"
 
- /**
- * Find indices of strings in vector starts with substring
+/**
+ * Get the minimum of two numbers.
+ *
+ * @param a First value.
+ * @param b Second value.
+ * @return Minimum of two numbers.
+ */
+size_t min_of(size_t a, size_t b) {
+    return (a < b) ? a : b;
+}
+
+/**
+ * Find strings in vector starts with substring.
  *
  * @param substr String with which the word should begin.
+ * @param last_word Last word in user-entered line.
  * @param dict Vector of words.
- * @return Vector with indices of words starts with substring.
+ * @param optional_brackets String with symbols for optional values.
+ * @return Vector with words starts with substring.
  */
-static std::vector<size_t> starts_with(const std::string& substr, const std::vector<std::string> &dict) {
-    std::vector<size_t> result;
+std::vector<std::string> words_starts_with(std::string_view substr, std::string_view last_word, Dictionary& dict, std::string_view optional_brackets) {
+    std::vector<std::string> result;
 
-    if (substr.empty()) {
+    // Return if dictionary hasn't last_word as key or
+    // substr contain one of symbols for optional values
+    if (!dict.count(last_word.data()) || substr.find_first_of(optional_brackets) != std::string::npos) {
         return result;
     }
 
+    // Return all words that may come
+    // after last_word if substr is empty
+    if (substr.empty()) {
+        return dict[last_word.data()];
+    }
+
     // Find strings starts with substring
-    for (size_t i = 0 ; i < dict.size(); i++) {
-        if (dict[i].find(substr) == 0) {
-            result.push_back(i);
+    std::vector<std::string> candidates_list = dict[last_word.data()];
+    for (size_t i = 0 ; i < candidates_list.size(); i++) {
+        if (candidates_list[i].find(substr) == 0) {
+            result.push_back(dict[last_word.data()][i]);
         }
     }
 
@@ -42,33 +65,51 @@ static std::vector<size_t> starts_with(const std::string& substr, const std::vec
 }
 
 /**
-* Find indices of strings in vector similar to a substring (max 1 error)
-*
-* @param substr String with which the word should begin.
-* @param dict Vector of words.
-* @return Vector with indices of words similar to a substring.
-*/
-static std::vector<size_t> maybe(const std::string& substr, const std::vector<std::string> &dict) {
-    std::vector<size_t> result;
+ * Find strings in vector similar to a substring (max 1 error).
+ *
+ * @param substr String with which the word should begin.
+ * @param last_word Last word in user-entered line.
+ * @param dict Vector of words.
+ * @param optional_brackets String with symbols for optional values.
+ * @return Vector with words similar to a substring.
+ */
+std::vector<std::string> words_similar_to(std::string_view substr, std::string_view last_word, Dictionary& dict, std::string_view optional_brackets) {
+    std::vector<std::string> result;
 
+    // Return if substr is empty
     if (substr.empty()) {
         return result;
     }
 
     // Find strings starts similar to a substring
-    for (size_t i = 0 ; i < dict.size(); i++) {
+    std::vector<std::string> candidates_list = dict[last_word.data()];
+    for (size_t i = 0 ; i < candidates_list.size(); i++) {
         int errors = 0;
+
+        // Current candidate in vector
+        std::string candidate = dict[last_word.data()][i];
+
+        // Character-by-character check
         for (size_t j = 0; j < substr.length(); j++) {
-            if (substr[j] != dict[i][j]) {
+
+            // Skip if substr contain one of symbols for optional values
+            if (optional_brackets.find_first_of(candidate[j]) != std::string::npos) {
+                errors = 2;
+                break;
+            }
+
+            if (substr[j] != candidate[j]) {
                 errors += 1;
             }
+
             if (errors > 1) {
                 break;
             }
         }
 
+        // Add candidate to vector if errors less or equal then 1
         if (errors <= 1) {
-            result.push_back(i);
+            result.push_back(candidate);
         }
     }
 
@@ -76,63 +117,157 @@ static std::vector<size_t> maybe(const std::string& substr, const std::vector<st
 }
 
 /**
- * Get the position of the start of the last word
+ * Get the position of the beginning of the last word.
  *
- * @param str String for searching.
- * @return Position of last word.
+ * @param str String with words.
+ * @return Position of the beginning of the last word.
  */
-static size_t last_word_pos(const std::string& str) {
-    auto last_word = str.rfind(' ');
-    return (int(last_word) == -1) ? 0 : last_word + 1;
+size_t get_last_word_pos(std::string_view str) {
+    // Return 0 if the string consists entirely of spaces
+    if (std::count(str.begin(), str.end(), ' ') == str.length()) {
+        return 0;
+    }
+
+    // Get position of last space symbol
+    auto last_word_pos = str.rfind(' ');
+
+    // Return 0 if space symbol not founded, else return position + 1
+    return (last_word_pos == std::string::npos) ? 0 : last_word_pos + 1;
 }
 
 /**
- * Printing user input with prompts
+ * Get the last word in string.
+ *
+ * @param str String with words.
+ * @return Pair Position of the beginning of the
+ *         last word and the last word in string.
+ */
+std::pair<size_t, std::string> get_last_word(std::string_view str) {
+    // Get position of the beginning of the last word
+    size_t last_word_pos = get_last_word_pos(str);
+
+    // Get last word from string
+    auto last_word = str.substr(last_word_pos);
+
+    // Return pair
+    return std::make_pair(last_word_pos, last_word.data());
+}
+
+/**
+ * Get the penultimate words.
+ *
+ * @param str String with words.
+ * @return Pair Position of the beginning of the penultimate
+ *         word and the penultimate word in string.
+ */
+std::pair<size_t, std::string> get_penult_word(std::string_view str) {
+    // Setup end position for searching
+    size_t end_pos = min_of(str.find_last_not_of(' ') + 2, str.length());
+
+    // Get start position of last word in string
+    size_t last_word = get_last_word_pos(str.substr(0, end_pos));
+
+    // Prepare variables
+    size_t penult_word_pos = 0;
+    std::string penult_word = "";
+
+    // Setup penultimate if start of last word not equal 0
+    if (last_word != 0) {
+        // Get start position of penultimate word
+        penult_word_pos = str.find_last_of(' ', last_word - 2);
+
+        // Set penultimate word if position was founded
+        if (penult_word_pos != std::string::npos) {
+            penult_word = str.substr(penult_word_pos, last_word - penult_word_pos - 1);
+        }
+        // Else set penultimate word as everything that went to the last word
+        else {
+            penult_word = str.substr(0, last_word - 1);
+        }
+    }
+
+    // Trim penultimate word
+    penult_word = trim(penult_word);
+
+    // Return pair
+    return std::make_pair(penult_word_pos, penult_word);
+}
+
+/**
+ * Get the word-prediction by the index.
+ *
+ * @param buffer String with user input.
+ * @param dict Dictionary with rules.
+ * @param number Index of word-prediction.
+ * @param optional_brackets String with symbols for optional values.
+ * @return Tuple of word-prediction, phrase for output, substring of buffer
+ *         preceding before phrase, start position of last word.
+ */
+std::tuple<std::string, std::string, std::string, size_t>
+get_prediction(std::string_view buffer, Dictionary& dict, size_t number, std::string_view optional_brackets) {
+    // Get last word info
+    auto [last_word_pos, last_word] = get_last_word(buffer);
+
+    // Get penultimate word from string
+    auto [_, penult_word] = get_penult_word(buffer);
+
+    std::string prediction; // word-prediction
+    std::string phrase;     // phrase for output
+    std::string prefix;     // substring of buffer preceding before phrase
+
+    // Find prediction
+    std::vector<std::string> starts_with = words_starts_with(last_word, penult_word, dict, optional_brackets);
+
+    // Setup variables if words starts with substring was founded
+    if (!starts_with.empty()) {
+        prediction = starts_with[number % starts_with.size()];
+        phrase = prediction;
+        prefix = buffer.substr(0, last_word_pos);
+    }
+    // If words starts with substring wasn't founded
+    else {
+        // Find similar words
+        std::vector<std::string> similar = words_similar_to(last_word, penult_word, dict, optional_brackets);
+
+        // Setup variables if similar words was founded
+        if (!similar.empty()) {
+            prediction = similar[number % similar.size()];
+            phrase = " maybe you mean " + prediction + "?";
+            prefix = buffer;
+        }
+    }
+
+    // Return tuple
+    return std::make_tuple(prediction, phrase, prefix, last_word_pos);
+}
+
+/**
+ * Printing user input with prompts.
  *
  * @param buffer String - User input.
  * @param dict Vector of words.
  * @param number Hint number.
+ * @param optional_brackets String with symbols for optional values.
+ * @return Void.
  */
-void print_with_prompts(const std::string& buffer, const std::vector<std::string>& dict, size_t number) {
-    // Try predict word in user input
-    size_t last_word = last_word_pos(buffer);
+void print_with_prompts(std::string_view buffer, Dictionary& dict, size_t number, std::string_view optional_brackets) {
+    // Get prediction phrase and substring of buffer preceding before phrases
+    auto [_, phrase, prefix, __] = get_prediction(buffer, dict, number, optional_brackets);
 
-    std::vector<size_t> indices = starts_with(buffer.substr(last_word), dict);
-
-    // Printing prediction to the
-    // console if it was found
-    if (!indices.empty()) {
-        size_t word_index = indices[number % indices.size()];
-
-        std::cout << '\r' << buffer.substr(0, last_word)
-                  << gray << dict[word_index] << white;
-    }
-    // Printing possible words to the
-    // console if it was found
-    else {
-        std::vector<size_t> possible = maybe(buffer.substr(last_word), dict);
-
-        if (!possible.empty()) {
-            size_t possible_index = possible[number % possible.size()];
-            std::cout << '\r' << buffer << gray << " maybe you mean \""
-                      << dict[possible_index] << "\"?" << white;
-        }
-        else {
-             std::cout << clear_line;
-        }
-    }
-
-    // Printing current buffer to the console
+    // Output prediction
+    std::cout << clear_line;
+    std::cout << '\r' << prefix << gray << phrase << white;
     std::cout << '\r' << buffer;
 }
 
 /**
- * Reading user input with autocomplete
+ * Reading user input with autocomplete.
  *
  * @param dict Vector of words.
- * @return user input.
+ * @param optional_brackets String with symbols for optional values.
+ * @return User input.
  */
-std::string input(std::vector<std::string> dict) {
+std::string input(Dictionary& dict, std::string_view optional_brackets = "") {
     std::string buffer;       // User input
     size_t offset = 0;        // Cursor offset from the end of the buffer
     size_t number = 0;        // Hint number
@@ -146,6 +281,10 @@ std::string input(std::vector<std::string> dict) {
     #endif
 
     while (true) {
+        // Printing user input with prompts
+        print_with_prompts(buffer, dict, number, optional_brackets);
+        goto_xy(short(buffer.length() - offset + 1), y);
+
         // Read character from console
         int ch = _getch();
 
@@ -160,69 +299,54 @@ std::string input(std::vector<std::string> dict) {
             exit(0);
         }
         #endif
-        
-        // Change buffer and clear console line
-        // if BACKSPACE was pressed
+
+        // Edit buffer like backspace if BACKSPACE was pressed
         else if (ch == BACKSPACE) {
             if (!buffer.empty() && buffer.length() - offset >= 1) {
                 buffer.erase(buffer.length() - offset - 1, 1);
             }
-            std::cout << clear_line;
-            print_with_prompts(buffer, dict, number);
-            goto_xy(short(buffer.length() - offset + 1), y);
         }
-        
+
         // Apply prediction if TAB was pressed
         else if (ch == TAB) {
-            // Get last word position
-            size_t last_word = last_word_pos(buffer);
+            // Get prediction and start position of last word
+            auto [prediction, _, __, last_word_pos] = get_prediction(buffer, dict, number, optional_brackets);
 
-            // If a prediction exists
-            std::vector<size_t> indices = starts_with(buffer.substr(last_word), dict);
-            if (!indices.empty()) {
-                // Apply prediction
-                size_t word_index = indices[number % indices.size()];
-                buffer = buffer.substr(0, last_word) + dict[word_index] + " ";
-            }
-            else {
-                std::vector<size_t> possible = maybe(buffer.substr(last_word), dict);
-                if (!possible.empty()) {
-                    size_t possible_index = possible[number % possible.size()];
-                    buffer = buffer.substr(0, last_word) + dict[possible_index] + " ";
-                }
-            }
+            // Add prediction to user input
+            buffer = buffer.substr(0, last_word_pos) + prediction + " ";
 
+            // Reset cursor offset and hint number
             offset = 0;
             number = 0;
-
-            std::cout << clear_line;
-            print_with_prompts(buffer, dict, number);
         }
-        
+
         // Left and Right key handler
         #if defined(OS_WINDOWS)
-        else if (ch==224)
+        else if (ch == 224)
         #elif defined(OS_UNIX)
         else if (ch == 27 && _getch() == 91)
         #endif
         switch (_getch()) {
             case LEFT:
+                // Increase offset from the end of the buffer if left key pressed
                 offset = (offset < buffer.length()) ? offset + 1 : buffer.length();
-                goto_xy(short(buffer.length() - offset + 1), y);
                 break;
             case RIGHT:
+                // Decrease offset from the end of the buffer if left key pressed
                 offset = (offset > 0) ? offset - 1 : 0;
-                goto_xy(short(buffer.length() - offset + 1), y);
                 break;
             case UP:
+                // Increase hint number
                 number = number + 1;
-                print_with_prompts(buffer, dict, number);
+                std::cout << clear_line;
                 break;
             case DOWN:
+                // Decrease hint number
                 number = number - 1;
-                print_with_prompts(buffer, dict, number);
+                std::cout << clear_line;
                 break;
             case DEL:
+                // Edit buffer like DELETE key
                 #if defined(OS_UNIX)
                 if (_getch() == 126)
                 #endif
@@ -231,19 +355,14 @@ std::string input(std::vector<std::string> dict) {
                         buffer.erase(buffer.length() - offset, 1);
                         offset -= 1;
                     }
-                    std::cout << clear_line;
-                    print_with_prompts(buffer, dict, number);
-                    goto_xy(short(buffer.length() - offset + 1), y);
                 }
             default:
                 break;
         }
 
-        // Add character to buffer if any key was pressed
+        // Add character to buffer considering offset if any key was pressed
         else if (!std::count(ignore_keys.begin(), ignore_keys.end(), ch)) {
             buffer.insert(buffer.end() - offset, (char)ch);
-            print_with_prompts(buffer, dict, number);
-            goto_xy(short(buffer.length() - offset + 1), y);
 
             if (ch == SPACE) {
                 number = 0;
@@ -252,4 +371,4 @@ std::string input(std::vector<std::string> dict) {
     }
 }
 
-#endif //AUTO_COMPLETE_PREDICT_H
+#endif //CLI_AUTOCOMPLETE_PREDICT_H

@@ -3,20 +3,22 @@
 #include <vector>
 
 #include "predict.h"
-
-// TODO dictionary from file
+#include "parser.h"
 
 int main() {
-    std::vector<std::string> dict = {
-        "push",
-        "puts",
-        "append",
-        "hello",
-    };
+    std::string config_file_path = "../src/config.txt";
+    std::string optional_brackets = "[";
 
-    while (true) {
-        std::string command = input(dict);
-        std::cout << std::endl << command << std::endl;
+    auto [dict, status, message] = parse_config_file(config_file_path);
+
+    if (status) {
+        while (true) {
+            std::string command = input(dict, optional_brackets);
+            std::cout << std::endl << command << std::endl;
+        }
+    }
+    else {
+        std::cerr << message << std::endl;
     }
 
     return 0;

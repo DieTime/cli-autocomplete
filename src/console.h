@@ -1,6 +1,6 @@
 #pragma once
-#ifndef AUTO_COMPLETE_CONSOLE_H
-#define AUTO_COMPLETE_CONSOLE_H
+#ifndef CLI_AUTOCOMPLETE_CONSOLE_H
+#define CLI_AUTOCOMPLETE_CONSOLE_H
 
 #if defined(_WIN32) || defined(_WIN64)
     #define OS_WINDOWS
@@ -47,7 +47,7 @@
 
 #if defined(OS_UNIX)
 /**
- * Read key without press ENTER
+ * Read key without press ENTER.
  *
  * @return Code of key on keyboard.
  */
@@ -66,7 +66,7 @@ int _getch() {
 
 #if defined(OS_WINDOWS)
 /**
- * Get count of terminal cols
+ * Get count of terminal cols.
  *
  * @return Width of terminal.
  */
@@ -78,7 +78,7 @@ size_t console_width() {
 #endif
 
 /**
- * Clear terminal line
+ * Clear terminal line.
  *
  * @param os Output stream.
  * @return input parameter os.
@@ -94,7 +94,7 @@ std::ostream& clear_line(std::ostream& os) {
 }
 
 /**
- * Sets the console color to gray
+ * Sets the console color to gray.
  *
  * @param os Output stream.
  * @return input parameter os.
@@ -109,10 +109,10 @@ std::ostream& gray(std::ostream& os) {
 }
 
 /**
- * Sets the console color to white
+ * Sets the console color to white.
  *
  * @param os Output stream.
- * @return input parameter os.
+ * @return Input parameter os.
  */
 std::ostream& white(std::ostream& os) {
 #if defined(OS_WINDOWS)
@@ -124,7 +124,7 @@ std::ostream& white(std::ostream& os) {
 }
 
 /**
- * Gets current terminal cursor position
+ * Gets current terminal cursor position.
  *
  * @return Y position of terminal cursor.
  */
@@ -169,11 +169,11 @@ short cursor_y_pos() {
 }
 
 /**
- * Move terminal cursor at position x and y
+ * Move terminal cursor at position x and y.
  *
  * @param x X position to move.
  * @param x Y position to move.
- * @return void.
+ * @return Void.
  */
 void goto_xy(short x, short y) {
 #if defined(OS_WINDOWS)
@@ -184,4 +184,4 @@ void goto_xy(short x, short y) {
 #endif
 }
 
-#endif //AUTO_COMPLETE_CONSOLE_H
+#endif //CLI_AUTOCOMPLETE_CONSOLE_H
