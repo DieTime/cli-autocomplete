@@ -51,6 +51,8 @@ git
         add
             [variable name] [remote server link]
     push
+        -u
+            [variable name] [branch]
         [variable name] [branch]
         --all
     pull

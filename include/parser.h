@@ -73,6 +73,11 @@ std::tuple<Dictionary, bool, std::string> parse_config_file(const std::string& f
         // Get word (token) from line
         token = trim(line);
 
+        // Tabulation validation
+        if (tab_size != 0 && spaces % tab_size != 0) {
+            return std::make_tuple(dict, false, "Error! Tab length error was made.\nPossibly in line: " + line );
+        }
+
         // Get count of tabulation
         tab_count = (tab_size == 0) ? 0 : (spaces / tab_size);
 
