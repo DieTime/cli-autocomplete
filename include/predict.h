@@ -256,7 +256,7 @@ void print_with_prompts(std::string_view buffer, Dictionary& dict, size_t number
 
     // Output prediction
     std::cout << clear_line;
-    std::cout << '\r' << prefix << gray << phrase << white;
+    std::cout << '\r' << prefix << set_predict_color << phrase << set_primary_color;
     std::cout << '\r' << buffer;
 }
 

@@ -101,7 +101,7 @@ std::ostream& clear_line(std::ostream& os) {
  * @param os Output stream.
  * @return input parameter os.
  */
-std::ostream& gray(std::ostream& os) {
+std::ostream& set_predict_color(std::ostream& os) {
 #if defined(OS_WINDOWS)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 #elif defined(OS_UNIX)
@@ -111,16 +111,16 @@ std::ostream& gray(std::ostream& os) {
 }
 
 /**
- * Sets the console color to white.
+ * Sets the console color to default.
  *
  * @param os Output stream.
  * @return Input parameter os.
  */
-std::ostream& white(std::ostream& os) {
+std::ostream& set_primary_color(std::ostream& os) {
 #if defined(OS_WINDOWS)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 #elif defined(OS_UNIX)
-    std::cout << "\033[37m";
+    std::cout << "\033[0m";
 #endif
     return os;
 }
