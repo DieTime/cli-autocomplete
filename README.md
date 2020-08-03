@@ -1,13 +1,12 @@
-# Cross-platform Autocomplete library
 <p align="center">
-  <img src="https://i.ibb.co/HdhP715/Group-1.png" width="330" style="margin-bottom: -25px">
+  <img src="https://i.ibb.co/41pL50L/Group-1.png" width="450">
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.0.0-b.svg" alt="version">
 </p>
 
 ### About
-Flexible library for your CLI applications:
+Cross-platform flexible library for your CLI applications:
 
 ### Features
 - Cross-platform: macOS, Linux, Windows
