@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.ibb.co/41pL50L/Group-1.png" width="400">
+  <img src="https://i.ibb.co/41pL50L/Group-1.png" width="400" alt="logo">
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.0.0-b.svg" alt="version">
@@ -39,7 +39,7 @@ git
 ```
 
 ### Simple Example
-More complex example with: `color settings`, `handling optional values` and `line title configuration` [you will find here.](example/main.cpp)
+> More complex example with: `color settings`, `handling optional values` and `line title configuration` [you will find here.](example/main.cpp)
 ```cpp
 #include <iostream>
 #include <string>
