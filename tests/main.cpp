@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.h"
+
 #include "../include/autocomplete.h"
 
 void lines_to_file(const std::string& filename, const std::vector<std::string>& lines) {

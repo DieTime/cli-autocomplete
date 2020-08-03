@@ -1,3 +1,45 @@
+# Cross-platform Autocomplete library
+<p align="center">
+  <img src="https://i.ibb.co/HdhP715/Group-1.png" width="330" style="margin-bottom: -25px">
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.0.0-b.svg" alt="version">
+</p>
+
+### About
+Flexible library for your CLI applications:
+
+### Features
+- Cross-platform: macOS, Linux, Windows
+- Writing your own autocomplete rules.
+- Setting your own highlight colors.
+
+### Config Example
+1. After `git` may follow: `config`, `init`, `clone`.
+2. After `config` may follow: `--global`, `user.name`, `user.email`.
+3. After `--global` may follow: `user.name`, `user.email`.
+4. After `user.name` may follow optional value: `"[name]"`.
+5. ...
+```
+git
+    config
+        --global
+            user.name
+                "[name]"
+            user.email
+                "[email]"
+        user.name
+            "[name]"
+        user.email
+            "[email]"
+    init
+        [repository name]
+    clone
+        [url]
+```
+
+### Code Example
+```cpp
 #include <iostream>
 #include <string>
 
@@ -57,3 +99,25 @@ int main() {
 
     return 0;
 }
+```
+
+### How start
+```bash
+git clone https://github.com/DieTime/CLI-AutoComplete.git
+cd CLI-AutoComplete/
+
+cmake -DCMAKE_BUILD_TYPE=Release -S . -B ./cmake-build 
+cmake --build ./cmake-build --config Release
+
+----------------------- RUN EXAMPLE ---------------------
+
+cd example/Release/
+./example            # MacOS or Linux
+example.exe          # Windows
+
+---------------------- OR RUN TESTS ---------------------
+
+cd tests/Release/
+./tests              # MacOS or Linux
+tests.exe            # Windows
+```

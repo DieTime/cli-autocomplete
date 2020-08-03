@@ -182,18 +182,18 @@ SHARED_LIB std::tuple<std::string, std::string, std::string, size_t>
  * @param line_title Line title of CLI when entering command.
  * @param number Hint number.
  * @param optional_brackets String with symbols for optional values.
- * @param primary_color System code of primary color (predictions color).
- * @param predict_color System code of predict color (user input color).
- * @param default_color System code of default color (line title color).
+ * @param title_color System code of title color     (line title color).
+ * @param predict_color System code of predict color (prediction color).
+ * @param default_color System code of default color (user input color).
  * @return Void.
  */
 #if defined(OS_WINDOWS)
 SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
-                                   std::string_view optional_brackets, uint16_t primary_color, uint16_t predict_color,
+                                   std::string_view optional_brackets, uint16_t title_color, uint16_t predict_color,
                                    uint16_t default_color);
 #else
 SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
-                                   std::string_view optional_brackets, std::string primary_color, std::string predict_color,
+                                   std::string_view optional_brackets, std::string title_color, std::string predict_color,
                                    std::string default_color);
 #endif
 /**
@@ -202,17 +202,17 @@ SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict, st
  * @param dict Vector of words.
  * @param line_title Line title of CLI when entering command.
  * @param optional_brackets String with symbols for optional values.
- * @param primary_color System code of primary color (predictions color).
- * @param predict_color System code of predict color (user input color).
- * @param default_color System code of default color (line title color).
+ * @param title_color System code of title color     (line title color).
+ * @param predict_color System code of predict color (prediction color).
+ * @param default_color System code of default color (user input color).
  * @return User input.
  */
 #if defined(OS_WINDOWS)
-std::string input(Dictionary& dict, std::string_view line_title, std::string_view optional_brackets = "",
-                  uint16_t primary_color = 10, uint16_t predict_color = 8, uint16_t default_color = 7);
+std::string input(Dictionary& dict, std::string_view line_title = "", std::string_view optional_brackets = "",
+                  uint16_t title_color = 10, uint16_t predict_color = 8, uint16_t default_color = 7);
 #else
-    std::string input(Dictionary& dict, std::string_view line_title, std::string_view optional_brackets = "",
-                  std::string primary_color = "92", std::string predict_color = "90", std::string default_color = "0");
+    std::string input(Dictionary& dict, std::string_view line_title = "", std::string_view optional_brackets = "",
+                      std::string title_color = "92", std::string predict_color = "90", std::string default_color = "0");
 #endif
 
 /**

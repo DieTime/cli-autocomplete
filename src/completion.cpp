@@ -249,18 +249,18 @@ get_prediction(std::string_view buffer, Dictionary& dict, size_t number, std::st
  * @param line_title Line title of CLI when entering command.
  * @param number Hint number.
  * @param optional_brackets String with symbols for optional values.
- * @param primary_color System code of primary color (predictions color).
- * @param predict_color System code of predict color (user input color).
- * @param default_color System code of default color (line title color).
+ * @param title_color System code of title color     (line title color).
+ * @param predict_color System code of predict color (prediction color).
+ * @param default_color System code of default color (user input color).
  * @return Void.
  */
 #if defined(OS_WINDOWS)
 void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
-                        std::string_view optional_brackets, uint16_t primary_color, uint16_t predict_color,
+                        std::string_view optional_brackets, uint16_t title_color, uint16_t predict_color,
                         uint16_t default_color) {
 #else
 void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
-                        std::string_view optional_brackets, std::string primary_color, std::string predict_color,
+                        std::string_view optional_brackets, std::string title_color, std::string predict_color,
                         std::string default_color) {
 #endif
     // Get prediction phrase and substring of buffer preceding before phrases
@@ -271,11 +271,11 @@ void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_v
     // Output prediction
     std::cout << clear_line;
 
-    std::cout << '\r' << set_console_color(primary_color) << line_title
+    std::cout << '\r' << set_console_color(title_color) << line_title
                       << set_console_color(default_color) << splitter << prefix
                       << set_console_color(predict_color) << phrase ;
 
-    std::cout << '\r' << set_console_color(primary_color) << line_title
+    std::cout << '\r' << set_console_color(title_color) << line_title
                       << set_console_color(default_color) << splitter << buffer;
 }
 
@@ -284,17 +284,17 @@ void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_v
  *
  * @param dict Vector of words.
  * @param optional_brackets String with symbols for optional values.
- * @param primary_color System code of primary color (predictions color).
- * @param predict_color System code of predict color (user input color).
- * @param default_color System code of default color (line title color).
+ * @param title_color System code of title color     (line title color).
+ * @param predict_color System code of predict color (prediction color).
+ * @param default_color System code of default color (user input color).
  * @return User input.
  */
 #if defined(OS_WINDOWS)
 std::string input(Dictionary& dict, std::string_view line_title, std::string_view optional_brackets,
-                  uint16_t primary_color, uint16_t predict_color, uint16_t default_color) {
+                  uint16_t title_color, uint16_t predict_color, uint16_t default_color) {
 #else
 std::string input(Dictionary& dict, std::string_view line_title, std::string_view optional_brackets,
-              std::string primary_color, std::string predict_color, std::string default_color) {
+                  std::string title_color, std::string predict_color, std::string default_color) {
 #endif
     std::string buffer;       // User input
     size_t offset = 0;        // Cursor offset from the end of the buffer
@@ -311,7 +311,7 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
     while (true) {
         // Printing user input with prompts
         print_with_prompts(buffer, dict, line_title, number, optional_brackets,
-                           primary_color, predict_color, default_color);
+                           title_color, predict_color, default_color);
 
         // Move cursor
         short x = short(buffer.length() + line_title.length() + !line_title.empty() + 1 - offset);

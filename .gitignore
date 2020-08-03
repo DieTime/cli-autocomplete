@@ -1,4 +1,6 @@
 .idea
 *build*
-/example/build/
-/tests/build
+/example/Release/
+/example/Debug/
+/tests/Release/
+/tests/Debug/
