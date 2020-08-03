@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <map>
 
-typedef std::map<std::string, std::vector<std::string>> Dictionary;
+#include "../include/completion.h"
 
 /**
  * Remove extra spaces to the left and right of the string.

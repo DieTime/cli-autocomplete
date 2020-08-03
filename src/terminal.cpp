@@ -1,4 +1,3 @@
-#pragma once
 #if defined(_WIN32) || defined(_WIN64)
     #define OS_WINDOWS
 #elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
@@ -11,36 +10,15 @@
     #include <conio.h>
     #include <Windows.h>
 #elif defined(OS_UNIX)
-    #include <unistd.h>
+#include <unistd.h>
     #include <termios.h>
     #include <csignal>
 #endif
 
 #include <iostream>
 #include <string>
-#include <vector>
 
-#if defined(OS_WINDOWS)
-    #define ENTER 13
-    #define BACKSPACE 8
-    #define CTRL_C 3
-    #define LEFT 75
-    #define RIGHT 77
-    #define DEL 83
-    #define UP 72
-    #define DOWN 80
-    #define SPACE 32
-#elif defined(OS_UNIX)
-    #define ENTER 10
-    #define BACKSPACE 127
-    #define SPACE 32
-    #define LEFT 68
-    #define RIGHT 67
-    #define UP 65
-    #define DOWN 66
-    #define DEL 51
-#endif
-    #define TAB 9
+#include "../include/completion.h"
 
 #if defined(OS_UNIX)
 /**
@@ -71,7 +49,7 @@ size_t console_width() {
     CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
 
-    short width = info.dwSize.X - 1;
+    short width = info.dwSize.X--;
     return size_t((width < 0) ? 0 : width);
 }
 #endif

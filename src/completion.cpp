@@ -6,33 +6,15 @@
     #error unsupported platform
 #endif
 
-#include <string>
-#include <vector>
-#include <iostream>
-
-#include "autocomplete.h"
-
 #if defined(OS_WINDOWS)
-#define ENTER 13
-    #define BACKSPACE 8
-    #define CTRL_C 3
-    #define LEFT 75
-    #define RIGHT 77
-    #define DEL 83
-    #define UP 72
-    #define DOWN 80
-    #define SPACE 32
-#elif defined(OS_UNIX)
-    #define ENTER 10
-    #define BACKSPACE 127
-    #define SPACE 32
-    #define LEFT 68
-    #define RIGHT 67
-    #define UP 65
-    #define DOWN 66
-    #define DEL 51
+    #include <conio.h>
 #endif
-    #define TAB 9
+    #include <string>
+    #include <vector>
+    #include <iostream>
+    #include <algorithm>
+
+#include "../include/completion.h"
 
 /**
  * Get the minimum of two numbers.
@@ -291,9 +273,9 @@ std::string input(Dictionary& dict, std::string_view optional_brackets = "") {
 
     // Ignore key codes
     #if defined(OS_WINDOWS)
-        std::vector<int> ignore_keys({1, 2, 19, 24, 26});
+    std::vector<int> ignore_keys({1, 2, 19, 24, 26});
     #elif defined(OS_UNIX)
-        std::vector<int> ignore_keys({1, 2, 4, 24});
+    std::vector<int> ignore_keys({1, 2, 4, 24});
     #endif
 
     while (true) {
@@ -309,9 +291,9 @@ std::string input(Dictionary& dict, std::string_view optional_brackets = "") {
             return buffer;
         }
 
-        // Keyboard interrupt handler for Windows
+            // Keyboard interrupt handler for Windows
         #if defined(OS_WINDOWS)
-            else if (ch == CTRL_C) {
+        else if (ch == CTRL_C) {
             exit(0);
         }
         #endif
@@ -342,26 +324,26 @@ std::string input(Dictionary& dict, std::string_view optional_brackets = "") {
         #elif defined(OS_UNIX)
         else if (ch == 27 && _getch() == 91)
         #endif
-        switch (_getch()) {
-            case LEFT:
-                // Increase offset from the end of the buffer if left key pressed
-                offset = (offset < buffer.length()) ? offset + 1 : buffer.length();
-                break;
-            case RIGHT:
-                // Decrease offset from the end of the buffer if left key pressed
-                offset = (offset > 0) ? offset - 1 : 0;
-                break;
-            case UP:
-                // Increase hint number
-                number = number + 1;
-                std::cout << clear_line;
-                break;
-            case DOWN:
-                // Decrease hint number
-                number = number - 1;
-                std::cout << clear_line;
-                break;
-            case DEL:
+            switch (_getch()) {
+                case LEFT:
+                    // Increase offset from the end of the buffer if left key pressed
+                    offset = (offset < buffer.length()) ? offset + 1 : buffer.length();
+                    break;
+                case RIGHT:
+                    // Decrease offset from the end of the buffer if left key pressed
+                    offset = (offset > 0) ? offset - 1 : 0;
+                    break;
+                case UP:
+                    // Increase hint number
+                    number = number + 1;
+                    std::cout << clear_line;
+                    break;
+                case DOWN:
+                    // Decrease hint number
+                    number = number - 1;
+                    std::cout << clear_line;
+                    break;
+                case DEL:
                 // Edit buffer like DELETE key
                 #if defined(OS_UNIX)
                 if (_getch() == 126)
@@ -372,9 +354,9 @@ std::string input(Dictionary& dict, std::string_view optional_brackets = "") {
                         offset -= 1;
                     }
                 }
-            default:
-                break;
-        }
+                default:
+                    break;
+            }
 
         // Add character to buffer considering offset if any key was pressed
         else if (!std::count(ignore_keys.begin(), ignore_keys.end(), ch)) {

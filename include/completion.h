@@ -1,30 +1,47 @@
 #pragma once
-#ifndef CLI_AUTOCOMPLETE_AUTOCOMPLETE_H
-#define CLI_AUTOCOMPLETE_AUTOCOMPLETE_H
+#ifndef CLI_AUTOCOMPLETE_COMPLETION_H
+#define CLI_AUTOCOMPLETE_COMPLETION_H
 
 #if defined(_WIN32) || defined(_WIN64)
     #define OS_WINDOWS
+    #ifdef BUILD_DLL
+        #define SHARED_LIB __declspec(dllexport)
+    #else
+        #define SHARED_LIB __declspec(dllexport)
+    #endif
 #elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
     #define OS_UNIX
+    #define SHARED_LIB __attribute__((visibility("default")))
 #else
     #error unsupported platform
 #endif
 
-#if defined(OS_WINDOWS)
-    #include <conio.h>
-    #include <Windows.h>
-#elif defined(OS_UNIX)
-    #include <unistd.h>
-    #include <termios.h>
-    #include <csignal>
-#endif
-
-#include <iostream>
 #include <string>
 #include <vector>
-#include <fstream>
-#include <algorithm>
 #include <map>
+#include <iostream>
+
+#if defined(OS_WINDOWS)
+    #define ENTER 13
+    #define BACKSPACE 8
+    #define CTRL_C 3
+    #define LEFT 75
+    #define RIGHT 77
+    #define DEL 83
+    #define UP 72
+    #define DOWN 80
+    #define SPACE 32
+    #elif defined(OS_UNIX)
+#define ENTER 10
+    #define BACKSPACE 127
+    #define SPACE 32
+    #define LEFT 68
+    #define RIGHT 67
+    #define UP 65
+    #define DOWN 66
+    #define DEL 51
+#endif
+    #define TAB 9
 
 typedef std::map<std::string, std::vector<std::string>> Dictionary;
 
@@ -34,7 +51,7 @@ typedef std::map<std::string, std::vector<std::string>> Dictionary;
  *
  * @return Code of key on keyboard.
  */
-int _getch();
+SHARED_LIB int _getch();
 #endif
 
 #if defined(OS_WINDOWS)
@@ -43,7 +60,7 @@ int _getch();
  *
  * @return Width of terminal.
  */
-size_t console_width();
+SHARED_LIB size_t console_width();
 #endif
 
 /**
@@ -52,7 +69,7 @@ size_t console_width();
  * @param os Output stream.
  * @return input parameter os.
  */
-std::ostream& clear_line(std::ostream& os);
+SHARED_LIB std::ostream& clear_line(std::ostream& os);
 
 /**
  * Sets the console color to gray.
@@ -60,7 +77,7 @@ std::ostream& clear_line(std::ostream& os);
  * @param os Output stream.
  * @return input parameter os.
  */
-std::ostream& set_predict_color(std::ostream& os);
+SHARED_LIB std::ostream& set_predict_color(std::ostream& os);
 
 /**
  * Sets the console color to default.
@@ -68,14 +85,14 @@ std::ostream& set_predict_color(std::ostream& os);
  * @param os Output stream.
  * @return Input parameter os.
  */
-std::ostream& set_primary_color(std::ostream& os);
+SHARED_LIB std::ostream& set_primary_color(std::ostream& os) ;
 
 /**
  * Gets current terminal cursor position.
  *
  * @return Y position of terminal cursor.
  */
-short cursor_y_pos();
+SHARED_LIB short cursor_y_pos();
 
 /**
  * Move terminal cursor at position x and y.
@@ -84,7 +101,7 @@ short cursor_y_pos();
  * @param x Y position to move.
  * @return Void.
  */
-void goto_xy(short x, short y);
+SHARED_LIB void goto_xy(short x, short y);
 
 /**
  * Get the minimum of two numbers.
@@ -93,7 +110,7 @@ void goto_xy(short x, short y);
  * @param b Second value.
  * @return Minimum of two numbers.
  */
-size_t min_of(size_t a, size_t b);
+SHARED_LIB size_t min_of(size_t a, size_t b);
 
 /**
  * Find strings in vector starts with substring.
@@ -104,8 +121,8 @@ size_t min_of(size_t a, size_t b);
  * @param optional_brackets String with symbols for optional values.
  * @return Vector with words starts with substring.
  */
-std::vector<std::string> words_starts_with(std::string_view substr, std::string_view last_word,
-                                           Dictionary& dict, std::string_view optional_brackets);
+SHARED_LIB std::vector<std::string> words_starts_with(std::string_view substr, std::string_view last_word,
+                                                      Dictionary& dict, std::string_view optional_brackets);
 
 /**
  * Find strings in vector similar to a substring (max 1 error).
@@ -116,8 +133,8 @@ std::vector<std::string> words_starts_with(std::string_view substr, std::string_
  * @param optional_brackets String with symbols for optional values.
  * @return Vector with words similar to a substring.
  */
-std::vector<std::string> words_similar_to(std::string_view substr, std::string_view last_word,
-                                          Dictionary& dict, std::string_view optional_brackets);
+SHARED_LIB std::vector<std::string> words_similar_to(std::string_view substr, std::string_view last_word,
+                                                     Dictionary& dict, std::string_view optional_brackets);
 
 /**
  * Get the position of the beginning of the last word.
@@ -125,7 +142,7 @@ std::vector<std::string> words_similar_to(std::string_view substr, std::string_v
  * @param str String with words.
  * @return Position of the beginning of the last word.
  */
-size_t get_last_word_pos(std::string_view str);
+SHARED_LIB size_t get_last_word_pos(std::string_view str);
 
 /**
  * Get the last word in string.
@@ -134,7 +151,7 @@ size_t get_last_word_pos(std::string_view str);
  * @return Pair Position of the beginning of the
  *         last word and the last word in string.
  */
-std::pair<size_t, std::string> get_last_word(std::string_view str);
+SHARED_LIB std::pair<size_t, std::string> get_last_word(std::string_view str);
 
 /**
  * Get the penultimate words.
@@ -143,7 +160,7 @@ std::pair<size_t, std::string> get_last_word(std::string_view str);
  * @return Pair Position of the beginning of the penultimate
  *         word and the penultimate word in string.
  */
-std::pair<size_t, std::string> get_penult_word(std::string_view str);
+SHARED_LIB std::pair<size_t, std::string> get_penult_word(std::string_view str);
 
 /**
  * Get the word-prediction by the index.
@@ -155,9 +172,8 @@ std::pair<size_t, std::string> get_penult_word(std::string_view str);
  * @return Tuple of word-prediction, phrase for output, substring of buffer
  *         preceding before phrase, start position of last word.
  */
-std::tuple<std::string, std::string, std::string, size_t>
-    get_prediction(std::string_view buffer, Dictionary& dict, size_t number,
-                   std::string_view optional_brackets);
+SHARED_LIB std::tuple<std::string, std::string, std::string, size_t>
+get_prediction (std::string_view buffer, Dictionary& dict, size_t number, std::string_view optional_brackets);
 
 /**
  * Printing user input with prompts.
@@ -168,8 +184,8 @@ std::tuple<std::string, std::string, std::string, size_t>
  * @param optional_brackets String with symbols for optional values.
  * @return Void.
  */
-void print_with_prompts(std::string_view buffer, Dictionary& dict, size_t number,
-                        std::string_view optional_brackets);
+SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict,
+                                   size_t number, std::string_view optional_brackets);
 
 /**
  * Reading user input with autocomplete.
@@ -178,7 +194,7 @@ void print_with_prompts(std::string_view buffer, Dictionary& dict, size_t number
  * @param optional_brackets String with symbols for optional values.
  * @return User input.
  */
-std::string input(Dictionary& dict, std::string_view optional_brackets);
+SHARED_LIB std::string input(Dictionary& dict, std::string_view optional_brackets);
 
 /**
  * Remove extra spaces to the left and right of the string.
@@ -186,7 +202,7 @@ std::string input(Dictionary& dict, std::string_view optional_brackets);
  * @param str Source string.
  * @return A new line equal to the original one without spaces on the left and right.
  */
-std::string trim(std::string_view str);
+SHARED_LIB std::string trim(std::string_view str);
 
 /**
  * Parse config file to dictionary.
@@ -194,6 +210,6 @@ std::string trim(std::string_view str);
  * @param file_path The path to the configuration file.
  * @return Tuple of dictionary with autocomplete rules, status of parsing and message.
  */
-std::tuple<Dictionary, bool, std::string> parse_config_file(const std::string& file_path);
+SHARED_LIB std::tuple<Dictionary, bool, std::string> parse_config_file(const std::string& file_path);
 
-#endif //CLI_AUTOCOMPLETE_AUTOCOMPLETE_H
+#endif //CLI_AUTOCOMPLETE_COMPLETION_H

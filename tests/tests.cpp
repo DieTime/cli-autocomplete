@@ -1,8 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.h"
-
-#include "../include/parser.h"
-#include "../include/predict.h"
+#include "../include/completion.h"
 
 void lines_to_file(const std::string& filename, const std::vector<std::string>& lines) {
     std::ofstream os(filename);
