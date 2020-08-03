@@ -53,10 +53,7 @@ int main() {
 
     if (status) {
         while (true) {
-            // Hearing user input with highlighting prompts
             std::string command = input(dict);
-
-            // Do something with the entered string...
             std::cout << std::endl << command << std::endl << std::endl;
         }
     }
