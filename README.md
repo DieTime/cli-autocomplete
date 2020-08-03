@@ -12,6 +12,7 @@ Cross-platform flexible library for your CLI applications:
 - Cross-platform: macOS, Linux, Windows
 - Writing your own autocomplete rules.
 - Setting your own highlight colors.
+- Required C++17
 
 ### Config Example
 1. After `git` may follow: `config`, `init`, `clone`.
