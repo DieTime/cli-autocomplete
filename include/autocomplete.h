@@ -1,6 +1,6 @@
 #pragma once
-#ifndef CLI_AUTOCOMPLETE_COMPLETION_H
-#define CLI_AUTOCOMPLETE_COMPLETION_H
+#ifndef CLI_AUTOCOMPLETE_AUTOCOMPLETE_H
+#define CLI_AUTOCOMPLETE_AUTOCOMPLETE_H
 
 #if defined(_WIN32) || defined(_WIN64)
     #define OS_WINDOWS
@@ -16,10 +16,13 @@
     #error unsupported platform
 #endif
 
-#include <string>
-#include <vector>
-#include <map>
-#include <iostream>
+#if defined(OS_WINDOWS)
+    #include <cstdint>
+#endif
+    #include <string>
+    #include <vector>
+    #include <map>
+    #include <iostream>
 
 #if defined(OS_WINDOWS)
     #define ENTER 13
@@ -31,8 +34,8 @@
     #define UP 72
     #define DOWN 80
     #define SPACE 32
-    #elif defined(OS_UNIX)
-#define ENTER 10
+#elif defined(OS_UNIX)
+    #define ENTER 10
     #define BACKSPACE 127
     #define SPACE 32
     #define LEFT 68
@@ -72,20 +75,16 @@ SHARED_LIB size_t console_width();
 SHARED_LIB std::ostream& clear_line(std::ostream& os);
 
 /**
- * Sets the console color to gray.
+ * Sets the console color.
  *
- * @param os Output stream.
- * @return input parameter os.
- */
-SHARED_LIB std::ostream& set_predict_color(std::ostream& os);
-
-/**
- * Sets the console color to default.
- *
- * @param os Output stream.
+ * @param color System code of target color.
  * @return Input parameter os.
  */
-SHARED_LIB std::ostream& set_primary_color(std::ostream& os) ;
+#if defined(OS_WINDOWS)
+SHARED_LIB std::string set_console_color(uint16_t color);
+#elif defined(OS_UNIX)
+std::string set_console_color(std::string color);
+#endif
 
 /**
  * Gets current terminal cursor position.
@@ -173,28 +172,48 @@ SHARED_LIB std::pair<size_t, std::string> get_penult_word(std::string_view str);
  *         preceding before phrase, start position of last word.
  */
 SHARED_LIB std::tuple<std::string, std::string, std::string, size_t>
-get_prediction (std::string_view buffer, Dictionary& dict, size_t number, std::string_view optional_brackets);
+    get_prediction (std::string_view buffer, Dictionary& dict, size_t number, std::string_view optional_brackets);
 
 /**
  * Printing user input with prompts.
  *
  * @param buffer String - User input.
  * @param dict Vector of words.
+ * @param line_title Line title of CLI when entering command.
  * @param number Hint number.
  * @param optional_brackets String with symbols for optional values.
+ * @param primary_color System code of primary color (predictions color).
+ * @param predict_color System code of predict color (user input color).
+ * @param default_color System code of default color (line title color).
  * @return Void.
  */
-SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict,
-                                   size_t number, std::string_view optional_brackets);
-
+#if defined(OS_WINDOWS)
+SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
+                                   std::string_view optional_brackets, uint16_t primary_color, uint16_t predict_color,
+                                   uint16_t default_color);
+#else
+SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
+                                   std::string_view optional_brackets, std::string primary_color, std::string predict_color,
+                                   std::string default_color);
+#endif
 /**
  * Reading user input with autocomplete.
  *
  * @param dict Vector of words.
+ * @param line_title Line title of CLI when entering command.
  * @param optional_brackets String with symbols for optional values.
+ * @param primary_color System code of primary color (predictions color).
+ * @param predict_color System code of predict color (user input color).
+ * @param default_color System code of default color (line title color).
  * @return User input.
  */
-SHARED_LIB std::string input(Dictionary& dict, std::string_view optional_brackets);
+#if defined(OS_WINDOWS)
+std::string input(Dictionary& dict, std::string_view line_title, std::string_view optional_brackets = "",
+                  uint16_t primary_color = 10, uint16_t predict_color = 8, uint16_t default_color = 7);
+#else
+    std::string input(Dictionary& dict, std::string_view line_title, std::string_view optional_brackets = "",
+                  std::string primary_color = "92", std::string predict_color = "90", std::string default_color = "0");
+#endif
 
 /**
  * Remove extra spaces to the left and right of the string.
@@ -212,4 +231,4 @@ SHARED_LIB std::string trim(std::string_view str);
  */
 SHARED_LIB std::tuple<Dictionary, bool, std::string> parse_config_file(const std::string& file_path);
 
-#endif //CLI_AUTOCOMPLETE_COMPLETION_H
+#endif //CLI_AUTOCOMPLETE_AUTOCOMPLETE_H

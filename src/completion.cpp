@@ -14,7 +14,7 @@
     #include <iostream>
     #include <algorithm>
 
-#include "../include/completion.h"
+#include "../include/autocomplete.h"
 
 /**
  * Get the minimum of two numbers.
@@ -36,7 +36,8 @@ size_t min_of(size_t a, size_t b) {
  * @param optional_brackets String with symbols for optional values.
  * @return Vector with words starts with substring.
  */
-std::vector<std::string> words_starts_with(std::string_view substr, std::string_view last_word, Dictionary& dict, std::string_view optional_brackets) {
+std::vector<std::string> words_starts_with(std::string_view substr, std::string_view last_word, Dictionary& dict,
+                                           std::string_view optional_brackets) {
     std::vector<std::string> result;
 
     // Return if dictionary hasn't last_word as key or
@@ -71,7 +72,8 @@ std::vector<std::string> words_starts_with(std::string_view substr, std::string_
  * @param optional_brackets String with symbols for optional values.
  * @return Vector with words similar to a substring.
  */
-std::vector<std::string> words_similar_to(std::string_view substr, std::string_view last_word, Dictionary& dict, std::string_view optional_brackets) {
+std::vector<std::string> words_similar_to(std::string_view substr, std::string_view last_word, Dictionary& dict,
+                                          std::string_view optional_brackets) {
     std::vector<std::string> result;
 
     // Return if substr is empty
@@ -244,18 +246,37 @@ get_prediction(std::string_view buffer, Dictionary& dict, size_t number, std::st
  *
  * @param buffer String - User input.
  * @param dict Vector of words.
+ * @param line_title Line title of CLI when entering command.
  * @param number Hint number.
  * @param optional_brackets String with symbols for optional values.
+ * @param primary_color System code of primary color (predictions color).
+ * @param predict_color System code of predict color (user input color).
+ * @param default_color System code of default color (line title color).
  * @return Void.
  */
-void print_with_prompts(std::string_view buffer, Dictionary& dict, size_t number, std::string_view optional_brackets) {
+#if defined(OS_WINDOWS)
+void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
+                        std::string_view optional_brackets, uint16_t primary_color, uint16_t predict_color,
+                        uint16_t default_color) {
+#else
+void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
+                        std::string_view optional_brackets, std::string primary_color, std::string predict_color,
+                        std::string default_color) {
+#endif
     // Get prediction phrase and substring of buffer preceding before phrases
     auto [_, phrase, prefix, __] = get_prediction(buffer, dict, number, optional_brackets);
 
+    std::string splitter = line_title.empty() ? "" : " ";
+
     // Output prediction
     std::cout << clear_line;
-    std::cout << '\r' << prefix << set_predict_color << phrase << set_primary_color;
-    std::cout << '\r' << buffer;
+
+    std::cout << '\r' << set_console_color(primary_color) << line_title
+                      << set_console_color(default_color) << splitter << prefix
+                      << set_console_color(predict_color) << phrase ;
+
+    std::cout << '\r' << set_console_color(primary_color) << line_title
+                      << set_console_color(default_color) << splitter << buffer;
 }
 
 /**
@@ -263,9 +284,18 @@ void print_with_prompts(std::string_view buffer, Dictionary& dict, size_t number
  *
  * @param dict Vector of words.
  * @param optional_brackets String with symbols for optional values.
+ * @param primary_color System code of primary color (predictions color).
+ * @param predict_color System code of predict color (user input color).
+ * @param default_color System code of default color (line title color).
  * @return User input.
  */
-std::string input(Dictionary& dict, std::string_view optional_brackets = "") {
+#if defined(OS_WINDOWS)
+std::string input(Dictionary& dict, std::string_view line_title, std::string_view optional_brackets,
+                  uint16_t primary_color, uint16_t predict_color, uint16_t default_color) {
+#else
+std::string input(Dictionary& dict, std::string_view line_title, std::string_view optional_brackets,
+              std::string primary_color, std::string predict_color, std::string default_color) {
+#endif
     std::string buffer;       // User input
     size_t offset = 0;        // Cursor offset from the end of the buffer
     size_t number = 0;        // Hint number
@@ -280,8 +310,12 @@ std::string input(Dictionary& dict, std::string_view optional_brackets = "") {
 
     while (true) {
         // Printing user input with prompts
-        print_with_prompts(buffer, dict, number, optional_brackets);
-        goto_xy(short(buffer.length() - offset + 1), y);
+        print_with_prompts(buffer, dict, line_title, number, optional_brackets,
+                           primary_color, predict_color, default_color);
+
+        // Move cursor
+        short x = short(buffer.length() + line_title.length() + !line_title.empty() + 1 - offset);
+        goto_xy(x, y);
 
         // Read character from console
         int ch = _getch();
@@ -291,7 +325,7 @@ std::string input(Dictionary& dict, std::string_view optional_brackets = "") {
             return buffer;
         }
 
-            // Keyboard interrupt handler for Windows
+        // Keyboard interrupt handler for Windows
         #if defined(OS_WINDOWS)
         else if (ch == CTRL_C) {
             exit(0);
@@ -311,7 +345,9 @@ std::string input(Dictionary& dict, std::string_view optional_brackets = "") {
             auto [prediction, _, __, last_word_pos] = get_prediction(buffer, dict, number, optional_brackets);
 
             // Add prediction to user input
-            buffer = buffer.substr(0, last_word_pos) + prediction + " ";
+            if (prediction.find_first_of(optional_brackets) == std::string::npos) {
+                buffer = buffer.substr(0, last_word_pos) + prediction + " ";
+            }
 
             // Reset cursor offset and hint number
             offset = 0;

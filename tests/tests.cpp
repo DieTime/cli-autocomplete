@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.h"
-#include "../include/completion.h"
+#include "../include/autocomplete.h"
 
 void lines_to_file(const std::string& filename, const std::vector<std::string>& lines) {
     std::ofstream os(filename);

@@ -1,10 +1,9 @@
-#include <vector>
 #include <string>
 #include <fstream>
 #include <algorithm>
 #include <map>
 
-#include "../include/completion.h"
+#include "../include/autocomplete.h"
 
 /**
  * Remove extra spaces to the left and right of the string.
@@ -34,8 +33,8 @@ std::tuple<Dictionary, bool, std::string> parse_config_file(const std::string& f
     std::string token;          // Received word from string
     std::string root_word;      // Dictionary key for inserting as root word
 
-    size_t tab_size = 0;        // Base length of a sequence of spaces in line
-    size_t tab_count = 0;       // Count of tabs in line
+    long tab_size = 0;        // Base length of a sequence of spaces in line
+    long tab_count = 0;       // Count of tabs in line
 
     // Open config file by file path
     std::ifstream config_file(file_path);
@@ -58,7 +57,7 @@ std::tuple<Dictionary, bool, std::string> parse_config_file(const std::string& f
         }
 
         // Getting count of spaces at the beginning of a line
-        size_t spaces = std::count(line.begin(), line.begin() + line.find_first_not_of(" "), ' ');
+        auto spaces = std::count(line.begin(), line.begin() + line.find_first_not_of(" "), ' ');
 
         // Setup base tabulation size if line with
         // spaces at the beginning has been founded

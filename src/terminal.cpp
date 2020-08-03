@@ -7,18 +7,16 @@
 #endif
 
 #if defined(OS_WINDOWS)
-    #include <conio.h>
     #include <Windows.h>
 #elif defined(OS_UNIX)
-#include <unistd.h>
+    #include <unistd.h>
     #include <termios.h>
     #include <csignal>
 #endif
 
 #include <iostream>
-#include <string>
 
-#include "../include/completion.h"
+#include "../include/autocomplete.h"
 
 #if defined(OS_UNIX)
 /**
@@ -49,7 +47,7 @@ size_t console_width() {
     CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
 
-    short width = info.dwSize.X--;
+    short width = --info.dwSize.X;
     return size_t((width < 0) ? 0 : width);
 }
 #endif
@@ -71,33 +69,19 @@ std::ostream& clear_line(std::ostream& os) {
 }
 
 /**
- * Sets the console color to gray.
+ * Sets the console color.
  *
- * @param os Output stream.
- * @return input parameter os.
- */
-std::ostream& set_predict_color(std::ostream& os) {
-#if defined(OS_WINDOWS)
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
-#elif defined(OS_UNIX)
-    std::cout << "\033[90m";
-#endif
-    return os;
-}
-
-/**
- * Sets the console color to default.
- *
- * @param os Output stream.
+ * @param color System code of target color.
  * @return Input parameter os.
  */
-std::ostream& set_primary_color(std::ostream& os) {
 #if defined(OS_WINDOWS)
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+std::string set_console_color(uint16_t color) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+    return "";
 #elif defined(OS_UNIX)
-    std::cout << "\033[0m";
+std::string set_console_color(std::string color) {
+    return "\033[" + color + "m";
 #endif
-    return os;
 }
 
 /**
@@ -113,8 +97,7 @@ short cursor_y_pos() {
 #elif defined(OS_UNIX)
     struct termios term, restore;
     char ch, buf[30] = {0};
-    int i = 0, pow = 1;
-    short y = 0;
+    short i = 0, pow = 1, y = 0;
 
     tcgetattr(0, &term);
     tcgetattr(0, &restore);
