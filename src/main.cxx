@@ -1,12 +1,7 @@
-#include <iostream>
-#include <string>
-#include <vector>
-
-#include "../include/predict.h"
-#include "../include/parser.h"
+#include "../include/autocomplete.h"
 
 int main() {
-    std::string config_file_path = "../config/rules.txt";
+    std::string config_file_path = "config.txt";
     std::string optional_brackets = "[";
 
     auto [dict, status, message] = parse_config_file(config_file_path);

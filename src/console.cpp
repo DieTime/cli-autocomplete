@@ -1,7 +1,4 @@
 #pragma once
-#ifndef CLI_AUTOCOMPLETE_CONSOLE_H
-#define CLI_AUTOCOMPLETE_CONSOLE_H
-
 #if defined(_WIN32) || defined(_WIN64)
     #define OS_WINDOWS
 #elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
@@ -185,5 +182,3 @@ void goto_xy(short x, short y) {
     printf("\033[%d;%dH", y, x);
 #endif
 }
-
-#endif //CLI_AUTOCOMPLETE_CONSOLE_H

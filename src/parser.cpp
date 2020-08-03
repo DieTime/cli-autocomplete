@@ -1,7 +1,3 @@
-#pragma once
-#ifndef CLI_AUTOCOMPLETE_PARSER_H
-#define CLI_AUTOCOMPLETE_PARSER_H
-
 #include <vector>
 #include <string>
 #include <fstream>
@@ -99,5 +95,3 @@ std::tuple<Dictionary, bool, std::string> parse_config_file(const std::string& f
     // Return tuple with success status
     return std::make_tuple(dict, true, "Success. The rule dictionary has been created.");
 }
-
-#endif //CLI_AUTOCOMPLETE_PARSER_H

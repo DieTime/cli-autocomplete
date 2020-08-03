@@ -1,7 +1,3 @@
-#pragma once
-#ifndef CLI_AUTOCOMPLETE_PREDICT_H
-#define CLI_AUTOCOMPLETE_PREDICT_H
-
 #if defined(_WIN32) || defined(_WIN64)
     #define OS_WINDOWS
 #elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
@@ -13,10 +9,30 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <algorithm>
 
-#include "parser.h"
-#include "console.h"
+#include "autocomplete.h"
+
+#if defined(OS_WINDOWS)
+#define ENTER 13
+    #define BACKSPACE 8
+    #define CTRL_C 3
+    #define LEFT 75
+    #define RIGHT 77
+    #define DEL 83
+    #define UP 72
+    #define DOWN 80
+    #define SPACE 32
+#elif defined(OS_UNIX)
+    #define ENTER 10
+    #define BACKSPACE 127
+    #define SPACE 32
+    #define LEFT 68
+    #define RIGHT 67
+    #define UP 65
+    #define DOWN 66
+    #define DEL 51
+#endif
+    #define TAB 9
 
 /**
  * Get the minimum of two numbers.
@@ -370,5 +386,3 @@ std::string input(Dictionary& dict, std::string_view optional_brackets = "") {
         }
     }
 }
-
-#endif //CLI_AUTOCOMPLETE_PREDICT_H
