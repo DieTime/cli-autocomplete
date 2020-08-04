@@ -53,6 +53,14 @@ int main() {
 
     if (status) {
         while (true) {
+            std::cerr << "Attention! Please run the executable file only" << std::endl
+                      << "through the command line!\n\n";
+            
+            std::cerr << "- To switch the prompts press UP or DOWN arrow." << std::endl;
+            std::cerr << "- To move cursor press LEFT or RIGHT arrow." << std::endl;
+            std::cerr << "- To edit input press DELETE or BACKSPACE key." << std::endl;
+            std::cerr << "- To apply current prompt press TAB key.\n\n";
+
             std::string command = input(dict);
             std::cout << std::endl << command << std::endl << std::endl;
         }
