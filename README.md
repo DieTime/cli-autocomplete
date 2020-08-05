@@ -7,6 +7,8 @@
 
 ### About
 Cross-platform flexible library for your CLI applications.
+  
+<img src="https://s7.gifyu.com/images/example3316d0de48f02022.gif" alt="example gif" width="450">
 
 ### Features
 - Cross-platform: macOS, Linux, Windows.
