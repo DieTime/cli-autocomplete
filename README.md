@@ -95,3 +95,6 @@ cd tests/Release/
 ./tests              # MacOS or Linux
 tests.exe            # Windows
 ```
+
+### About changes
+A detailed description of the changes can be found in [CHANGELOG.md](CHANGELOG.md)
