@@ -344,8 +344,9 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
             // Get prediction and start position of last word
             auto [prediction, _, __, last_word_pos] = get_prediction(buffer, dict, number, optional_brackets);
 
-            // Add prediction to user input
-            if (prediction.find_first_of(optional_brackets) == std::string::npos) {
+            // Add prediction to user input if it exists and
+            // there are no symbols for optional values
+            if (!prediction.empty() && prediction.find_first_of(optional_brackets) == std::string::npos) {
                 buffer = buffer.substr(0, last_word_pos) + prediction + " ";
             }
 
@@ -356,43 +357,43 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
 
         // Left and Right key handler
         #if defined(OS_WINDOWS)
-        else if (ch == 224)
+        else if (ch == 0 || ch == 224)
         #elif defined(OS_UNIX)
         else if (ch == 27 && _getch() == 91)
         #endif
-            switch (_getch()) {
-                case LEFT:
-                    // Increase offset from the end of the buffer if left key pressed
-                    offset = (offset < buffer.length()) ? offset + 1 : buffer.length();
-                    break;
-                case RIGHT:
-                    // Decrease offset from the end of the buffer if left key pressed
-                    offset = (offset > 0) ? offset - 1 : 0;
-                    break;
-                case UP:
-                    // Increase hint number
-                    number = number + 1;
-                    std::cout << clear_line;
-                    break;
-                case DOWN:
-                    // Decrease hint number
-                    number = number - 1;
-                    std::cout << clear_line;
-                    break;
-                case DEL:
-                // Edit buffer like DELETE key
-                #if defined(OS_UNIX)
-                if (_getch() == 126)
-                #endif
-                {
-                    if (!buffer.empty() && offset != 0) {
-                        buffer.erase(buffer.length() - offset, 1);
-                        offset -= 1;
+                switch (_getch()) {
+                    case LEFT:
+                        // Increase offset from the end of the buffer if left key pressed
+                        offset = (offset < buffer.length()) ? offset + 1 : buffer.length();
+                        break;
+                    case RIGHT:
+                        // Decrease offset from the end of the buffer if left key pressed
+                        offset = (offset > 0) ? offset - 1 : 0;
+                        break;
+                    case UP:
+                        // Increase hint number
+                        number = number + 1;
+                        std::cout << clear_line;
+                        break;
+                    case DOWN:
+                        // Decrease hint number
+                        number = number - 1;
+                        std::cout << clear_line;
+                        break;
+                    case DEL:
+                    // Edit buffer like DELETE key
+                    #if defined(OS_UNIX)
+                    if (_getch() == 126)
+                    #endif
+                    {
+                        if (!buffer.empty() && offset != 0) {
+                            buffer.erase(buffer.length() - offset, 1);
+                            offset -= 1;
+                        }
                     }
+                    default:
+                        break;
                 }
-                default:
-                    break;
-            }
 
         // Add character to buffer considering offset if any key was pressed
         else if (!std::count(ignore_keys.begin(), ignore_keys.end(), ch)) {
