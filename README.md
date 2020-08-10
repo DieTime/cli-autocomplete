@@ -6,22 +6,22 @@
 </p>
 
 ### About
-Cross-platform flexible autocomplete library for your CLI applications.
+Cross-platform flexible autocomplete library for your CLI applications
   
 <img src="https://s7.gifyu.com/images/example3316d0de48f02022.gif" alt="example gif" width="500">
 
 ### Features
-- Cross-platform: `macOS`, `Linux`, `Windows`.
-- Write your own autocomplete rules.
-- Setup your own highlight colors.
-- Required `C++17`.
+- Cross-platform: `macOS`, `Linux`, `Windows`
+- Write your own autocomplete rules
+- Setup your own highlight colors
+- Required `C++17`
 
 ### Config Example
-1. After `git` may follow: `config`, `init`, `clone`.
-2. After `config` may follow: `--global`, `user.name`, `user.email`.
-3. After `--global` may follow: `user.name`, `user.email`.
-4. After `user.name` may follow optional value: `"[name]"`.
-5. ...
+1. After `git` may follow: `config`, `init`, `clone`
+2. After `config` may follow: `--global`, `user.name`, `user.email`
+3. After `--global` may follow: `user.name`, `user.email`
+4. After `user.name` may follow optional value: `"[name]"`
+5. `...`
 ```
 git
     config
