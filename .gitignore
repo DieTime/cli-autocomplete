@@ -1,5 +1,5 @@
 .idea
-*build*
+/cmake-build*
 /example/Release/
 /example/Debug/
 /tests/Release/

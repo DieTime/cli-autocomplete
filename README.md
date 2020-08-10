@@ -96,9 +96,6 @@ cd tests/Release/
 tests.exe            # Windows
 ```
 
-### About changes
-> A detailed description of the changes can be found in [CHANGELOG.md](CHANGELOG.md)
-
 ### Linking a dynamic library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.0-alpha)
 #### Posix
 ```bash
@@ -114,3 +111,6 @@ cl /EHsc /std:c++17 <paths/of/source/files> /Fe<executable>.exe /I <path/to/incl
 ```cmd
 g++ -std=c++17 -o <executable>.exe <paths/of/source/files> -L<path/to/shared/lib> -I<path/to/include> -lcliac
 ```
+
+### About changes
+> A detailed description of the changes can be found in [CHANGELOG.md](CHANGELOG.md)
