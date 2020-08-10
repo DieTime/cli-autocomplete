@@ -5,13 +5,13 @@
 #if defined(_WIN32) || defined(_WIN64)
     #define OS_WINDOWS
     #ifdef BUILD_DLL
-        #define SHARED_LIB __declspec(dllexport)
+        #define SHARED_LIB extern __declspec(dllexport)
     #else
-        #define SHARED_LIB __declspec(dllexport)
+        #define SHARED_LIB extern __declspec(dllimport)
     #endif
 #elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
-    #define OS_UNIX
-    #define SHARED_LIB __attribute__((visibility("default")))
+    #define OS_POSIX
+    #define SHARED_LIB extern __attribute__((visibility("default")))
 #else
     #error unsupported platform
 #endif
@@ -34,7 +34,7 @@
     #define UP 72
     #define DOWN 80
     #define SPACE 32
-#elif defined(OS_UNIX)
+#elif defined(OS_POSIX)
     #define ENTER 10
     #define BACKSPACE 127
     #define SPACE 32
@@ -48,7 +48,7 @@
 
 typedef std::map<std::string, std::vector<std::string>> Dictionary;
 
-#if defined(OS_UNIX)
+#if defined(OS_POSIX)
 /**
  * Read key without press ENTER.
  *
@@ -82,8 +82,8 @@ SHARED_LIB std::ostream& clear_line(std::ostream& os);
  */
 #if defined(OS_WINDOWS)
 SHARED_LIB std::string set_console_color(uint16_t color);
-#elif defined(OS_UNIX)
-std::string set_console_color(std::string color);
+#elif defined(OS_POSIX)
+SHARED_LIB std::string set_console_color(std::string color);
 #endif
 
 /**
@@ -208,11 +208,11 @@ SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict, st
  * @return User input.
  */
 #if defined(OS_WINDOWS)
-std::string input(Dictionary& dict, std::string_view line_title = "", std::string_view optional_brackets = "",
+SHARED_LIB std::string input(Dictionary& dict, std::string_view line_title = "", std::string_view optional_brackets = "",
                   uint16_t title_color = 10, uint16_t predict_color = 8, uint16_t default_color = 7);
 #else
-    std::string input(Dictionary& dict, std::string_view line_title = "", std::string_view optional_brackets = "",
-                      std::string title_color = "92", std::string predict_color = "90", std::string default_color = "0");
+SHARED_LIB std::string input(Dictionary& dict, std::string_view line_title = "", std::string_view optional_brackets = "",
+                             std::string title_color = "92", std::string predict_color = "90", std::string default_color = "0");
 #endif
 
 /**

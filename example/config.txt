@@ -39,7 +39,7 @@ git
     show
         [commit]
     branch
-        -d:
+        -d
             [branch name]
         [branch name]
     checkout

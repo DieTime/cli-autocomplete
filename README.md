@@ -86,15 +86,31 @@ cmake --build ./cmake-build --config Release
 ----------------------- RUN EXAMPLE ---------------------
 
 cd example/Release/
-./example            # MacOS or Linux
+./example            # Posix
 example.exe          # Windows
 
 ---------------------- OR RUN TESTS ---------------------
 
 cd tests/Release/
-./tests              # MacOS or Linux
+./tests              # Posix
 tests.exe            # Windows
 ```
 
 ### About changes
-A detailed description of the changes can be found in [CHANGELOG.md](CHANGELOG.md)
+> A detailed description of the changes can be found in [CHANGELOG.md](CHANGELOG.md)
+
+### Linking a dynamic library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.0-alpha)
+#### Posix
+```bash
+g++ -std=c++17 -o <executable> <paths/of/source/files> -L<path/to/shared/lib> -I<path/to/include> -lcliac -Wl,-rpath,<path/to/shared/lib>
+```
+
+#### Windows MSVC from VS Command Prompt
+```cmd
+cl /EHsc /std:c++17 <paths/of/source/files> /Fe<executable>.exe /I <path/to/include> /link <path/to/shared/lib>
+```
+
+#### Windows MinGW
+```cmd
+g++ -std=c++17 -o <executable>.exe <paths/of/source/files> -L<path/to/shared/lib> -I<path/to/include> -lcliac
+```

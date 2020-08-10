@@ -16,7 +16,7 @@ int main() {
         uint16_t title_color = 160; // by default 10
         uint16_t predict_color = 8; // by default 8
         uint16_t default_color = 7; // by default 7
-    #elif defined(OS_UNIX)
+    #elif defined(OS_POSIX)
         // https://stackoverflow.com/questions/2616906/how-do-i-output-coloured-text-to-a-linux-terminal#answer-45300654
         // Set the value that goes between \033 and m ( \033{your_value}m )
         std::string title_color = "0;30;102";  // by default 92

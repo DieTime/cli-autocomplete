@@ -10761,7 +10761,7 @@ namespace {
 namespace Catch {
     struct SignalDefs { DWORD id; const char* name; };
 
-    // There is no 1-1 mapping between signals and windows exceptions.
+    // There is no 1-1 mapping between signals and windows-msvc exceptions.
     // Windows can easily distinguish between SO and SigSegV,
     // but SigInt, SigTerm, etc are handled differently.
     static SignalDefs signalDefs[] = {
