@@ -41,7 +41,7 @@ git
 ```
 
 ### Simple Example
-> More complex example with: `color settings`, `handling optional values` and `line title configuration` [you will find here.](example/main.cpp)
+> More complex example with: `color settings`, `handling optional values` and `line title configuration` [you will find here](example/main.cpp)
 ```cpp
 #include <iostream>
 #include <string>
