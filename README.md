@@ -96,20 +96,38 @@ cd tests/Release/
 tests.exe            # Windows
 ```
 
-### Linking a dynamic library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.0-alpha)
-#### Posix
+### Linking a dynamic library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.0-dynamic)
+
+##### Posix
 ```bash
-g++ -std=c++17 -o <executable> <paths/of/source/files> -L<path/to/shared/lib> -I<path/to/include> -lcliac -Wl,-rpath,<path/to/shared/lib>
+g++ -std=c++17 -o <executable> <paths/of/source/files> -L<path/to/shared/lib/link(.a)/folder> -I<path/to/include/folder> -lcliac -Wl,-rpath,<path/to/shared/lib/folder>
 ```
 
-#### Windows MSVC from VS Command Prompt
+##### Windows MSVC from VS Command Prompt
 ```cmd
 cl /EHsc /std:c++17 <paths/of/source/files> /Fe<executable>.exe /I <path/to/include> /link <path/to/shared/lib>
 ```
 
-#### Windows MinGW
+##### Windows MinGW
 ```cmd
-g++ -std=c++17 -o <executable>.exe <paths/of/source/files> -L<path/to/shared/lib> -I<path/to/include> -lcliac
+g++ -std=c++17 -o <executable>.exe <paths/of/source/files> -L<path/to/shared/lib/link(.a)> -I<path/to/include> -lcliac
+```
+
+### Linking a static library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.0-static)
+
+##### Posix         
+```bash
+g++ -std=c++17 -o <executable> <paths/of/source/files> -L<path/to/static/lib/folder> -I<path/to/include> -lcliac
+```
+
+##### Windows MSVC from VS Command Prompt
+```cmd
+cl /EHsc /std:c++17 /DBUILD_STATIC <paths/of/source/files> /Fe<executable>.exe /I <path/to/include/folder> /link <path/to/static/lib/foleder>
+```
+
+##### Windows MinGW
+```cmd
+g++ -std=c++17 -DBUILD_STATIC -o <executable>.exe <paths/of/source/files> -L<path/to/static/lib/folder> -I<path/to/include/folder> -lcliac
 ```
 
 ### About changes
