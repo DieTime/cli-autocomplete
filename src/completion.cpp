@@ -266,17 +266,17 @@ void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_v
     // Get prediction phrase and substring of buffer preceding before phrases
     auto [_, phrase, prefix, __] = get_prediction(buffer, dict, number, optional_brackets);
 
-    std::string splitter = line_title.empty() ? "" : " ";
+    std::string delimiter = line_title.empty() ? "" : " ";
 
     // Output prediction
     std::cout << clear_line;
 
     std::cout << '\r' << set_console_color(title_color) << line_title
-                      << set_console_color(default_color) << splitter << prefix
-                      << set_console_color(predict_color) << phrase ;
+              << set_console_color(default_color) << delimiter << prefix
+              << set_console_color(predict_color) << phrase;
 
     std::cout << '\r' << set_console_color(title_color) << line_title
-                      << set_console_color(default_color) << splitter << buffer;
+              << set_console_color(default_color) << delimiter << buffer;
 }
 
 /**

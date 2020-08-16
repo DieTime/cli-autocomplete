@@ -15,6 +15,8 @@ Cross-platform flexible autocomplete library for your CLI applications
 - Write your own autocomplete rules
 - Setup your own highlight colors
 - Required `C++17`
+- Single header version of the library
+- `static` and `dynamic` versions of the library
 
 ### Config Example
 1. After `git` may follow: `config`, `init`, `clone`

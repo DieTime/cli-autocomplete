@@ -105,6 +105,22 @@ SHARED_LIB short cursor_y_pos();
 SHARED_LIB void goto_xy(short x, short y);
 
 /**
+ * Remove extra spaces to the left and right of the string.
+ *
+ * @param str Source string.
+ * @return A new line equal to the original one without spaces on the left and right.
+ */
+SHARED_LIB std::string trim(std::string_view str);
+
+/**
+ * Parse config file to dictionary.
+ *
+ * @param file_path The path to the configuration file.
+ * @return Tuple of dictionary with autocomplete rules, status of parsing and message.
+ */
+SHARED_LIB std::tuple<Dictionary, bool, std::string> parse_config_file(const std::string& file_path);
+
+/**
  * Get the minimum of two numbers.
  *
  * @param a First value.
@@ -174,7 +190,7 @@ SHARED_LIB std::pair<size_t, std::string> get_penult_word(std::string_view str);
  *         preceding before phrase, start position of last word.
  */
 SHARED_LIB std::tuple<std::string, std::string, std::string, size_t>
-    get_prediction (std::string_view buffer, Dictionary& dict, size_t number, std::string_view optional_brackets);
+    get_prediction(std::string_view buffer, Dictionary& dict, size_t number, std::string_view optional_brackets);
 
 /**
  * Printing user input with prompts.
@@ -216,21 +232,5 @@ SHARED_LIB std::string input(Dictionary& dict, std::string_view line_title = "",
 SHARED_LIB std::string input(Dictionary& dict, std::string_view line_title = "", std::string_view optional_brackets = "",
                              std::string title_color = "92", std::string predict_color = "90", std::string default_color = "0");
 #endif
-
-/**
- * Remove extra spaces to the left and right of the string.
- *
- * @param str Source string.
- * @return A new line equal to the original one without spaces on the left and right.
- */
-SHARED_LIB std::string trim(std::string_view str);
-
-/**
- * Parse config file to dictionary.
- *
- * @param file_path The path to the configuration file.
- * @return Tuple of dictionary with autocomplete rules, status of parsing and message.
- */
-SHARED_LIB std::tuple<Dictionary, bool, std::string> parse_config_file(const std::string& file_path);
 
 #endif //CLI_AUTOCOMPLETE_AUTOCOMPLETE_H
