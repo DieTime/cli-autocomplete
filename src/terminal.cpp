@@ -1,14 +1,14 @@
 #if defined(_WIN32) || defined(_WIN64)
     #define OS_WINDOWS
 #elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
-    #define OS_UNIX
+    #define OS_POSIX
 #else
     #error unsupported platform
 #endif
 
 #if defined(OS_WINDOWS)
     #include <Windows.h>
-#elif defined(OS_UNIX)
+#elif defined(OS_POSIX)
     #include <unistd.h>
     #include <termios.h>
     #include <csignal>
@@ -18,7 +18,7 @@
 
 #include "../include/autocomplete.h"
 
-#if defined(OS_UNIX)
+#if defined(OS_POSIX)
 /**
  * Read key without press ENTER.
  *
@@ -62,7 +62,7 @@ std::ostream& clear_line(std::ostream& os) {
 #if defined(OS_WINDOWS)
     size_t width = console_width();
     os << '\r' << std::string(width, ' ');
-#elif defined(OS_UNIX)
+#elif defined(OS_POSIX)
     std::cout << "\033[2K";
 #endif
     return os;
@@ -78,7 +78,7 @@ std::ostream& clear_line(std::ostream& os) {
 std::string set_console_color(uint16_t color) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
     return "";
-#elif defined(OS_UNIX)
+#elif defined(OS_POSIX)
 std::string set_console_color(std::string color) {
     return "\033[" + color + "m";
 #endif
@@ -94,7 +94,7 @@ short cursor_y_pos() {
     CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
     return info.dwCursorPosition.Y;
-#elif defined(OS_UNIX)
+#elif defined(OS_POSIX)
     struct termios term, restore;
     char ch, buf[30] = {0};
     short i = 0, pow = 1, y = 0;
@@ -139,7 +139,7 @@ void goto_xy(short x, short y) {
 #if defined(OS_WINDOWS)
     COORD xy {--x, y};
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), xy);
-#elif defined(OS_UNIX)
+#elif defined(OS_POSIX)
     printf("\033[%d;%dH", y, x);
 #endif
 }

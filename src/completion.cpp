@@ -1,7 +1,7 @@
 #if defined(_WIN32) || defined(_WIN64)
     #define OS_WINDOWS
 #elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
-    #define OS_UNIX
+    #define OS_POSIX
 #else
     #error unsupported platform
 #endif
@@ -31,32 +31,34 @@ size_t min_of(size_t a, size_t b) {
  * Find strings in vector starts with substring.
  *
  * @param substr String with which the word should begin.
- * @param last_word Last word in user-entered line.
+ * @param penult_word Penultimate word in user-entered line.
  * @param dict Vector of words.
  * @param optional_brackets String with symbols for optional values.
  * @return Vector with words starts with substring.
  */
-std::vector<std::string> words_starts_with(std::string_view substr, std::string_view last_word, Dictionary& dict,
+std::vector<std::string> words_starts_with(std::string_view substr, std::string_view penult_word, Dictionary& dict,
                                            std::string_view optional_brackets) {
     std::vector<std::string> result;
 
-    // Return if dictionary hasn't last_word as key or
+    // Return if dictionary hasn't penult_word as key or
     // substr contain one of symbols for optional values
-    if (!dict.count(last_word.data()) || substr.find_first_of(optional_brackets) != std::string::npos) {
+    if (!dict.count(penult_word.data()) ||
+        substr.find_first_of(optional_brackets) != std::string::npos)
+    {
         return result;
     }
 
     // Return all words that may come
     // after last_word if substr is empty
     if (substr.empty()) {
-        return dict[last_word.data()];
+        return dict[penult_word.data()];
     }
 
     // Find strings starts with substring
-    std::vector<std::string> candidates_list = dict[last_word.data()];
+    std::vector<std::string> candidates_list = dict[penult_word.data()];
     for (size_t i = 0 ; i < candidates_list.size(); i++) {
         if (candidates_list[i].find(substr) == 0) {
-            result.push_back(dict[last_word.data()][i]);
+            result.push_back(dict[penult_word.data()][i]);
         }
     }
 
@@ -67,12 +69,12 @@ std::vector<std::string> words_starts_with(std::string_view substr, std::string_
  * Find strings in vector similar to a substring (max 1 error).
  *
  * @param substr String with which the word should begin.
- * @param last_word Last word in user-entered line.
+ * @param penult_word Penultimate word in user-entered line.
  * @param dict Vector of words.
  * @param optional_brackets String with symbols for optional values.
  * @return Vector with words similar to a substring.
  */
-std::vector<std::string> words_similar_to(std::string_view substr, std::string_view last_word, Dictionary& dict,
+std::vector<std::string> words_similar_to(std::string_view substr, std::string_view penult_word, Dictionary& dict,
                                           std::string_view optional_brackets) {
     std::vector<std::string> result;
 
@@ -82,17 +84,17 @@ std::vector<std::string> words_similar_to(std::string_view substr, std::string_v
     }
 
     // Find strings starts similar to a substring
-    std::vector<std::string> candidates_list = dict[last_word.data()];
+    std::vector<std::string> candidates_list = dict[penult_word.data()];
     for (size_t i = 0 ; i < candidates_list.size(); i++) {
         int errors = 0;
 
         // Current candidate in vector
-        std::string candidate = dict[last_word.data()][i];
+        std::string candidate = candidates_list[i];
 
         // Character-by-character check
         for (size_t j = 0; j < substr.length(); j++) {
 
-            // Skip if substr contain one of symbols for optional values
+            // Skip if candidate contain one of symbols for optional values
             if (optional_brackets.find_first_of(candidate[j]) != std::string::npos) {
                 errors = 2;
                 break;
@@ -304,7 +306,7 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
     // Ignore key codes
     #if defined(OS_WINDOWS)
     std::vector<int> ignore_keys({1, 2, 19, 24, 26});
-    #elif defined(OS_UNIX)
+    #elif defined(OS_POSIX)
     std::vector<int> ignore_keys({1, 2, 4, 24});
     #endif
 
@@ -355,10 +357,10 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
             number = 0;
         }
 
-        // Left and Right key handler
+        // Arrows and Delete keys handler
         #if defined(OS_WINDOWS)
         else if (ch == 0 || ch == 224)
-        #elif defined(OS_UNIX)
+        #elif defined(OS_POSIX)
         else if (ch == 27 && _getch() == 91)
         #endif
                 switch (_getch()) {
@@ -382,7 +384,7 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
                         break;
                     case DEL:
                     // Edit buffer like DELETE key
-                    #if defined(OS_UNIX)
+                    #if defined(OS_POSIX)
                     if (_getch() == 126)
                     #endif
                     {

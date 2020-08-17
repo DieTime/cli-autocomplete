@@ -93,7 +93,7 @@ std::ostream& clear_line(std::ostream& os) {
 #if defined(OS_WINDOWS)
     size_t width = console_width();
     os << '\r' << std::string(width, ' ');
-#elif defined(OS_UNIX)
+#elif defined(OS_POSIX)
     std::cout << "\033[2K";
 #endif
     return os;
@@ -109,7 +109,7 @@ std::ostream& clear_line(std::ostream& os) {
 std::string set_console_color(uint16_t color) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
     return "";
-#elif defined(OS_UNIX)
+#elif defined(OS_POSIX)
     std::string set_console_color(std::string color) {
     return "\033[" + color + "m";
 #endif
@@ -125,7 +125,7 @@ short cursor_y_pos() {
     CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
     return info.dwCursorPosition.Y;
-#elif defined(OS_UNIX)
+#elif defined(OS_POSIX)
     struct termios term, restore;
     char ch, buf[30] = {0};
     short i = 0, pow = 1, y = 0;
@@ -170,7 +170,7 @@ void goto_xy(short x, short y) {
 #if defined(OS_WINDOWS)
     COORD xy {--x, y};
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), xy);
-#elif defined(OS_UNIX)
+#elif defined(OS_POSIX)
     printf("\033[%d;%dH", y, x);
 #endif
 }
@@ -316,12 +316,12 @@ std::vector<std::string> words_starts_with(std::string_view substr, std::string_
  * Find strings in vector similar to a substring (max 1 error).
  *
  * @param substr String with which the word should begin.
- * @param last_word Last word in user-entered line.
+ * @param penult_word Penultimate word in user-entered line.
  * @param dict Vector of words.
  * @param optional_brackets String with symbols for optional values.
  * @return Vector with words similar to a substring.
  */
-std::vector<std::string> words_similar_to(std::string_view substr, std::string_view last_word, Dictionary& dict,
+std::vector<std::string> words_similar_to(std::string_view substr, std::string_view penult_word, Dictionary& dict,
                                           std::string_view optional_brackets) {
     std::vector<std::string> result;
 
@@ -331,12 +331,12 @@ std::vector<std::string> words_similar_to(std::string_view substr, std::string_v
     }
 
     // Find strings starts similar to a substring
-    std::vector<std::string> candidates_list = dict[last_word.data()];
+    std::vector<std::string> candidates_list = dict[penult_word.data()];
     for (size_t i = 0 ; i < candidates_list.size(); i++) {
         int errors = 0;
 
         // Current candidate in vector
-        std::string candidate = dict[last_word.data()][i];
+        std::string candidate = candidates_list[i];
 
         // Character-by-character check
         for (size_t j = 0; j < substr.length(); j++) {
@@ -554,7 +554,7 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
     // Ignore key codes
     #if defined(OS_WINDOWS)
     std::vector<int> ignore_keys({1, 2, 19, 24, 26});
-    #elif defined(OS_UNIX)
+    #elif defined(OS_POSIX)
     std::vector<int> ignore_keys({1, 2, 4, 24});
     #endif
 
@@ -608,7 +608,7 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
         // Left and Right key handler
         #if defined(OS_WINDOWS)
         else if (ch == 0 || ch == 224)
-        #elif defined(OS_UNIX)
+        #elif defined(OS_POSIX)
         else if (ch == 27 && _getch() == 91)
         #endif
             switch (_getch()) {
@@ -632,7 +632,7 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
                     break;
                 case DEL:
                     // Edit buffer like DELETE key
-                    #if defined(OS_UNIX)
+                    #if defined(OS_POSIX)
                     if (_getch() == 126)
                     #endif
                     {

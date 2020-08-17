@@ -133,24 +133,24 @@ SHARED_LIB size_t min_of(size_t a, size_t b);
  * Find strings in vector starts with substring.
  *
  * @param substr String with which the word should begin.
- * @param last_word Last word in user-entered line.
+ * @param penult_word Last word in user-entered line.
  * @param dict Vector of words.
  * @param optional_brackets String with symbols for optional values.
  * @return Vector with words starts with substring.
  */
-SHARED_LIB std::vector<std::string> words_starts_with(std::string_view substr, std::string_view last_word,
+SHARED_LIB std::vector<std::string> words_starts_with(std::string_view substr, std::string_view penult_word,
                                                       Dictionary& dict, std::string_view optional_brackets);
 
 /**
  * Find strings in vector similar to a substring (max 1 error).
  *
  * @param substr String with which the word should begin.
- * @param last_word Last word in user-entered line.
+ * @param penult_word Penultimate word in user-entered line.
  * @param dict Vector of words.
  * @param optional_brackets String with symbols for optional values.
  * @return Vector with words similar to a substring.
  */
-SHARED_LIB std::vector<std::string> words_similar_to(std::string_view substr, std::string_view last_word,
+SHARED_LIB std::vector<std::string> words_similar_to(std::string_view substr, std::string_view penult_word,
                                                      Dictionary& dict, std::string_view optional_brackets);
 
 /**
