@@ -98,7 +98,7 @@ cd tests/Release/
 tests.exe            # Windows
 ```
 
-### Linking a dynamic library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.0-dynamic)
+### Linking a dynamic library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.3-dynamic)
 
 ##### Posix
 ```bash
@@ -115,7 +115,7 @@ cl /EHsc /std:c++17 <paths/of/source/files> /Fe<executable>.exe /I <path/to/incl
 g++ -std=c++17 -o <executable>.exe <paths/of/source/files> -L<path/to/shared/lib/link(.a)> -I<path/to/include> -lcliac
 ```
 
-### Linking a static library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.0-static)
+### Linking a static library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.3-static)
 
 ##### Posix         
 ```bash
