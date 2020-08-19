@@ -641,6 +641,7 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
                             offset -= 1;
                         }
                     }
+                    break;
                 default:
                     break;
             }

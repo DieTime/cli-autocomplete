@@ -383,16 +383,17 @@ std::string input(Dictionary& dict, std::string_view line_title, std::string_vie
                         std::cout << clear_line;
                         break;
                     case DEL:
-                    // Edit buffer like DELETE key
-                    #if defined(OS_POSIX)
-                    if (_getch() == 126)
-                    #endif
-                    {
-                        if (!buffer.empty() && offset != 0) {
-                            buffer.erase(buffer.length() - offset, 1);
-                            offset -= 1;
+                        // Edit buffer like DELETE key
+                        #if defined(OS_POSIX)
+                        if (_getch() == 126)
+                        #endif
+                        {
+                            if (!buffer.empty() && offset != 0) {
+                                buffer.erase(buffer.length() - offset, 1);
+                                offset -= 1;
+                            }
                         }
-                    }
+                        break;
                     default:
                         break;
                 }
