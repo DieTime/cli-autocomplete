@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2020-08-16 [[3f28a14]](https://github.com/DieTime/CLI-Autocomplete/commit/3f28a14)
+
+### Fixed 
+
+- Unannotated fallthrough between switch labels
+
 ## [1.0.2] - 2020-08-16 [[a395e76]](https://github.com/DieTime/CLI-Autocomplete/commit/a395e76)
 
 ### Added 

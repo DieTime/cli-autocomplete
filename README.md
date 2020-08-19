@@ -2,7 +2,7 @@
   <img src="https://i.ibb.co/41pL50L/Group-1.png" width="400" alt="logo">
 </p>
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.2-b.svg" alt="version">
+  <img src="https://img.shields.io/badge/version-1.0.3-b.svg" alt="version">
 </p>
 
 ### About
