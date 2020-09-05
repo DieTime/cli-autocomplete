@@ -74,12 +74,15 @@ std::ostream& clear_line(std::ostream& os) {
  * @param color System code of target color.
  * @return Input parameter os.
  */
+std::string set_console_color(
 #if defined(OS_WINDOWS)
-std::string set_console_color(uint16_t color) {
+    uint16_t color
+) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
     return "";
 #elif defined(OS_POSIX)
-std::string set_console_color(std::string color) {
+    std::string color
+) {
     return "\033[" + color + "m";
 #endif
 }

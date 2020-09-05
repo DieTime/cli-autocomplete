@@ -24,7 +24,7 @@ std::string trim(std::string_view str) {
  * @param file_path The path to the configuration file.
  * @return Tuple of dictionary with autocomplete rules, status of parsing and message.
  */
-std::tuple<Dictionary, bool, std::string> parse_config_file(const std::string& file_path) {
+std::tuple<Dictionary , bool, std::string> parse_config_file(const std::string& file_path) {
     Dictionary dict;            // Dictionary with autocomplete rules
 
     std::map<int, std::string>

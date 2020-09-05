@@ -256,15 +256,14 @@ get_prediction(std::string_view buffer, Dictionary& dict, size_t number, std::st
  * @param default_color System code of default color (user input color).
  * @return Void.
  */
+void print_with_prompts(
+    std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number, std::string_view optional_brackets,
 #if defined(OS_WINDOWS)
-void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
-                        std::string_view optional_brackets, uint16_t title_color, uint16_t predict_color,
-                        uint16_t default_color) {
+    int16_t title_color, uint16_t predict_color, uint16_t default_color
 #else
-void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
-                        std::string_view optional_brackets, std::string title_color, std::string predict_color,
-                        std::string default_color) {
+    std::string title_color, std::string predict_color, std::string default_color
 #endif
+) {
     // Get prediction phrase and substring of buffer preceding before phrases
     auto [_, phrase, prefix, __] = get_prediction(buffer, dict, number, optional_brackets);
 
@@ -291,13 +290,14 @@ void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_v
  * @param default_color System code of default color (user input color).
  * @return User input.
  */
+std::string input(
+    Dictionary& dict, std::string_view line_title, std::string_view optional_brackets,
 #if defined(OS_WINDOWS)
-std::string input(Dictionary& dict, std::string_view line_title, std::string_view optional_brackets,
-                  uint16_t title_color, uint16_t predict_color, uint16_t default_color) {
+    uint16_t title_color, uint16_t predict_color, uint16_t default_color
 #else
-std::string input(Dictionary& dict, std::string_view line_title, std::string_view optional_brackets,
-                  std::string title_color, std::string predict_color, std::string default_color) {
+    std::string title_color, std::string predict_color, std::string default_color
 #endif
+) {
     std::string buffer;       // User input
     size_t offset = 0;        // Cursor offset from the end of the buffer
     size_t number = 0;        // Hint number

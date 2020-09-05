@@ -82,11 +82,13 @@ SHARED_LIB std::ostream& clear_line(std::ostream& os);
  * @param color System code of target color.
  * @return Input parameter os.
  */
+SHARED_LIB std::string set_console_color(
 #if defined(OS_WINDOWS)
-SHARED_LIB std::string set_console_color(uint16_t color);
+    uint16_t color
 #elif defined(OS_POSIX)
-SHARED_LIB std::string set_console_color(std::string color);
+    std::string color
 #endif
+);
 
 /**
  * Gets current terminal cursor position.
@@ -205,15 +207,15 @@ SHARED_LIB std::tuple<std::string, std::string, std::string, size_t>
  * @param default_color System code of default color (user input color).
  * @return Void.
  */
+void print_with_prompts(
+    std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number, std::string_view optional_brackets,
 #if defined(OS_WINDOWS)
-SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
-                                   std::string_view optional_brackets, uint16_t title_color, uint16_t predict_color,
-                                   uint16_t default_color);
+    int16_t title_color, uint16_t predict_color, uint16_t default_color
 #else
-SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict, std::string_view line_title, size_t number,
-                                   std::string_view optional_brackets, std::string title_color, std::string predict_color,
-                                   std::string default_color);
+    std::string title_color, std::string predict_color, std::string default_color
 #endif
+);
+
 /**
  * Reading user input with autocomplete.
  *
@@ -225,12 +227,13 @@ SHARED_LIB void print_with_prompts(std::string_view buffer, Dictionary& dict, st
  * @param default_color System code of default color (user input color).
  * @return User input.
  */
+std::string input(
+    Dictionary& dict, std::string_view line_title, std::string_view optional_brackets,
 #if defined(OS_WINDOWS)
-SHARED_LIB std::string input(Dictionary& dict, std::string_view line_title = "", std::string_view optional_brackets = "",
-                  uint16_t title_color = 10, uint16_t predict_color = 8, uint16_t default_color = 7);
+    uint16_t title_color = 10, uint16_t predict_color = 8, uint16_t default_color = 7
 #else
-SHARED_LIB std::string input(Dictionary& dict, std::string_view line_title = "", std::string_view optional_brackets = "",
-                             std::string title_color = "92", std::string predict_color = "90", std::string default_color = "0");
+    std::string title_color = "92", std::string predict_color = "90", std::string default_color = "0"
 #endif
+);
 
 #endif //CLI_AUTOCOMPLETE_AUTOCOMPLETE_H
