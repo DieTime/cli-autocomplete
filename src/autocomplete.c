@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "../include/autocomplete.h"
@@ -15,14 +16,14 @@ char** tokenize(char* str, char delimiter) {
         }
         last_char = str[i];
     }
-
-    if (last_char != ' ') {
-        token_count += 1;
-    }
+    token_count += 1;
 
     // Allocate memory for tokens array
     char** result = (char**)malloc(sizeof(char*) * (token_count + 1));
-    assert(result != NULL && "memory allocation error");
+    if (result == NULL) {
+        fprintf(stderr, "[ERROR] Memory allocation error when tokenize string\n");
+        exit(0);
+    }
 
     int idx = 0;
     last_char = delimiter;
@@ -37,20 +38,29 @@ char** tokenize(char* str, char delimiter) {
             }
 
             result[idx] = (char*)malloc(sizeof(char) * (token_length + 1));
-            assert(result[idx] != NULL && "memory allocation error");
+            if (result[idx] == NULL) {
+                fprintf(stderr, "[ERROR] Memory allocation error when tokenize string\n");
+                exit(0);
+            }
 
             memcpy(result[idx], str + i, token_length);
             result[idx][token_length] = '\0';
 
             idx += 1;
-            i += token_length;
+            i += token_length - 1;
         }
 
         last_char = str[i];
     }
 
+
+    if (last_char == ' ') {
+        result[idx] = (char*)malloc(sizeof(char) * 2);
+        memcpy(result[idx], " \0", 2);
+        idx += 1;
+    }
+
     // Checking the number of received tokens
-    assert(idx == token_count && "the number of lines does not match the expected");
     result[idx] = "\0";
 
     return result;
@@ -63,7 +73,6 @@ void free_tokens(char** tokens) {
     while (tokens[counter][0] != '\0') {
         free(tokens[counter++]);
     }
-    free(tokens[counter]);
 
     // Free tokens array
     free(tokens);
