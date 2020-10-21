@@ -1,9 +1,2 @@
 .idea
-/cmake-build*
-/example/Release/
-/example/Debug/
-/tests/Release/
-/tests/Debug/
-*.bat
-*.sh
-*.zip
+cmake-build-debug-*

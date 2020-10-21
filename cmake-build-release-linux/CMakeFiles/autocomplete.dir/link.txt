@@ -1,0 +1,1 @@
+/usr/bin/clang -g   CMakeFiles/autocomplete.dir/main.c.o CMakeFiles/autocomplete.dir/src/autocomplete.c.o CMakeFiles/autocomplete.dir/src/node.c.o CMakeFiles/autocomplete.dir/src/node_vector.c.o CMakeFiles/autocomplete.dir/src/tree.c.o  -o autocomplete 

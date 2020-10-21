@@ -1,0 +1,54 @@
+git
+    init
+        [repository name]
+    clone
+        [url]
+    add
+        [file]
+        --all
+    commit
+        -m
+            "[commit message]"
+        -a
+            "[commit message]"
+    diff
+        -staged
+        [first branch] [second branch]
+    reset
+        [file]
+        [commit]
+        --hard
+            [commit]
+    status
+    rm
+        [file]
+        -r
+    log
+        --follow
+            [file]
+    show
+        [commit]
+    branch
+        -d
+            [branch name]
+        [branch name]
+    checkout
+        -b
+        [branch name]
+    merge
+        [branch name]
+    remote
+        add
+            [variable name] [remote server link]
+    push
+        -u
+            [variable name] [branch]
+        [variable name] [branch]
+        --all
+    pull
+        [repository link]
+    stash
+        save
+        pop
+        list
+        drop

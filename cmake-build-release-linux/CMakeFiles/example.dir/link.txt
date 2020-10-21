@@ -1,0 +1,1 @@
+/usr/bin/clang++  -g   CMakeFiles/example.dir/src/completion.cpp.o CMakeFiles/example.dir/src/parser.cpp.o CMakeFiles/example.dir/src/terminal.cpp.o CMakeFiles/example.dir/example/main.cpp.o  -o ../example/Debug/example 

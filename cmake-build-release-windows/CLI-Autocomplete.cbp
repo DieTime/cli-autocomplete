@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="CLI-Autocomplete"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="D:/Projects/auto-complete/cmake-build-release-windows"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="tests">
+				<Option output="D:/Projects/auto-complete/tests/tests.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Projects/auto-complete/cmake-build-release-windows"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/mingw32"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/backward"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/../../../../include"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 tests"/>
+					<CompileFile command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="tests/fast">
+				<Option output="D:/Projects/auto-complete/tests/tests.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Projects/auto-complete/cmake-build-release-windows"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/mingw32"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/backward"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/../../../../include"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 tests/fast"/>
+					<CompileFile command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example">
+				<Option output="D:/Projects/auto-complete/example/example.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Projects/auto-complete/cmake-build-release-windows"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/mingw32"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/backward"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/../../../../include"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 example"/>
+					<CompileFile command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example/fast">
+				<Option output="D:/Projects/auto-complete/example/example.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/Projects/auto-complete/cmake-build-release-windows"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/mingw32"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include/c++/backward"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/../../../../include"/>
+					<Add directory="c:\program files\mingw\bin\../lib/gcc/mingw32/9.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 example/fast"/>
+					<CompileFile command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="D:/Projects/auto-complete/cmake-build-release-windows"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="D:/Projects/auto-complete/cmake-build-release-windows"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MinGW/bin/mingw32-make.exe -f &quot;D:/Projects/auto-complete/cmake-build-release-windows/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="D:/Projects/auto-complete/example/main.cpp">
+			<Option target="example"/>
+		</Unit>
+		<Unit filename="D:/Projects/auto-complete/include/autocomplete.h">
+			<Option target="tests"/>
+			<Option target="example"/>
+		</Unit>
+		<Unit filename="D:/Projects/auto-complete/src/completion.cpp">
+			<Option target="tests"/>
+			<Option target="example"/>
+		</Unit>
+		<Unit filename="D:/Projects/auto-complete/src/parser.cpp">
+			<Option target="tests"/>
+			<Option target="example"/>
+		</Unit>
+		<Unit filename="D:/Projects/auto-complete/src/terminal.cpp">
+			<Option target="tests"/>
+			<Option target="example"/>
+		</Unit>
+		<Unit filename="D:/Projects/auto-complete/tests/Debug/rules.txt">
+			<Option target="tests"/>
+		</Unit>
+		<Unit filename="D:/Projects/auto-complete/tests/Release/rules.txt">
+			<Option target="tests"/>
+		</Unit>
+		<Unit filename="D:/Projects/auto-complete/tests/Release/tests.exe">
+			<Option target="tests"/>
+		</Unit>
+		<Unit filename="D:/Projects/auto-complete/tests/catch.h">
+			<Option target="tests"/>
+		</Unit>
+		<Unit filename="D:/Projects/auto-complete/tests/main.cpp">
+			<Option target="tests"/>
+		</Unit>
+		<Unit filename="D:/Projects/auto-complete/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

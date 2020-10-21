@@ -1,0 +1,36 @@
+The system is: Windows - 10.0.19041 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/Llvm/bin/clang-cl.exe 
+Build flags: -m32
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.exe"
+
+The C compiler identification is Clang, found in "D:/Projects/auto-complete/cmake-build-release-windows/CMakeFiles/3.17.3/CompilerIdC/CMakeCCompilerId.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: D:/Projects/auto-complete/cmake-build-release-windows/CMakeFiles/CMakeTmp
+
+Run Build Command(s):nmake /nologo cmTC_f6267\fast && 	"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\HostX86\x86\nmake.exe"  -f CMakeFiles\cmTC_f6267.dir\build.make /nologo -L                  CMakeFiles\cmTC_f6267.dir\build
+Building C object CMakeFiles/cmTC_f6267.dir/testCCompiler.c.obj
+	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\Llvm\bin\clang-cl.exe @C:\Users\Denis\AppData\Local\Temp\nm9FAB.tmp
+Linking C executable cmTC_f6267.exe
+	"C:\Program Files\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_f6267.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100183~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100183~1.0\x86\mt.exe --manifests  -- C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\Llvm\bin\lld-link.exe /nologo @CMakeFiles\cmTC_f6267.dir\objects1.rsp @C:\Users\Denis\AppData\Local\Temp\nm9FDB.tmp
+
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: D:/Projects/auto-complete/cmake-build-release-windows/CMakeFiles/CMakeTmp
+
+Run Build Command(s):nmake /nologo cmTC_95147\fast && 	"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\HostX86\x86\nmake.exe"  -f CMakeFiles\cmTC_95147.dir\build.make /nologo -L                  CMakeFiles\cmTC_95147.dir\build
+Building C object CMakeFiles/cmTC_95147.dir/CMakeCCompilerABI.c.obj
+	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\Llvm\bin\clang-cl.exe @C:\Users\Denis\AppData\Local\Temp\nmA0E3.tmp
+Linking C executable cmTC_95147.exe
+	"C:\Program Files\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_95147.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100183~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100183~1.0\x86\mt.exe --manifests  -- C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\Llvm\bin\lld-link.exe /nologo @CMakeFiles\cmTC_95147.dir\objects1.rsp @C:\Users\Denis\AppData\Local\Temp\nmA113.tmp
+
+
+

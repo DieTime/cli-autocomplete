@@ -1,0 +1,4 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/make -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -G "CodeBlocks - Unix Makefiles" /mnt/d/Projects/auto-complete
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /mnt/d/Projects/auto-complete/cmake-build-release-linux
