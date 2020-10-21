@@ -15,6 +15,10 @@ Tree* tree_create(const char* filepath) {
 
     // Create buffer for parsing
     char* buff = (char*)malloc(sizeof(char) * buff_length);
+    if (buff == NULL) {
+        fprintf(stderr, "[ERROR] Bad buffer memory allocation\n");
+        exit(1);
+    }
     unsigned buff_i;
 
     unsigned space_counter;    // Counter of spaces before token
@@ -26,6 +30,10 @@ Tree* tree_create(const char* filepath) {
 
     // Initialize tree and tree head
     Tree* tree = (Tree*)malloc(sizeof(Tree));
+    if (tree == NULL) {
+        fprintf(stderr, "[ERROR] Bad tree memory allocation\n");
+        exit(1);
+    }
     tree->head = node_create("\0", buff_length);
 
     // Vector of root nodes for parsing

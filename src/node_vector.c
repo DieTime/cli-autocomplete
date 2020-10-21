@@ -6,6 +6,10 @@
 NodeVector* node_vector_create(unsigned length) {
     // Allocate memory for vector
     NodeVector* nv = (NodeVector*)malloc(sizeof(NodeVector));
+    if (nv == NULL) {
+        fprintf(stderr, "[ERROR] Bad node vector memory allocation\n");
+        exit(1);
+    }
 
     // Setup vector capacity and length
     nv->length = 0;
@@ -26,6 +30,10 @@ void node_vector_push(NodeVector* nv, Node* n) {
     if (nv->length >= nv->capacity) {
         nv->capacity = (nv->capacity + 1) * 2;
         nv->data = (Node**)realloc(nv->data,sizeof(Node*) * nv->capacity);
+        if (nv->data == NULL) {
+            fprintf(stderr, "[ERROR] Bad node vector memory reallocation\n");
+            exit(1);
+        }
     }
 
     // Add node and increase length
@@ -46,7 +54,7 @@ void node_vector_print(NodeVector* nv) {
 
 Node* node_vector_get(NodeVector* nv, unsigned index) {
     // Error message if index not within array bounds
-    if (index < 0 || index >= nv->length) {
+    if (index >= nv->length) {
         fprintf(stderr, "[ERROR] Out of bounds an node vector\n");
         exit(1);
     }
@@ -57,7 +65,7 @@ Node* node_vector_get(NodeVector* nv, unsigned index) {
 
 void node_vector_set(NodeVector* nv, unsigned index, Node* item) {
     // Error message if index not within array bounds
-    if (index < 0 || index >= nv->length) {
+    if (index >= nv->length) {
         fprintf(stderr, "[ERROR] Out of bounds an node vector\n");
         exit(1);
     }

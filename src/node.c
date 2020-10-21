@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -6,9 +7,17 @@
 Node* node_create(char* token, unsigned token_length) {
     // Allocate memory for node
     Node* n = (Node*)malloc(sizeof(Node));
+    if (n == NULL) {
+        fprintf(stderr, "[ERROR] Bad node vector memory allocation\n");
+        exit(1);
+    }
 
     // Allocate memory for token field
     n->token = (char*)malloc(sizeof(char) * token_length);
+    if (n->token == NULL) {
+        fprintf(stderr, "[ERROR] Bad node vector memory allocation\n");
+        exit(1);
+    }
 
     // Setup fields of node
     memcpy(n->token, token, sizeof(char) * token_length);

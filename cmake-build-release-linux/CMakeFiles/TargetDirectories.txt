@@ -1,3 +1,0 @@
-/mnt/d/Projects/auto-complete/cmake-build-release-linux/CMakeFiles/rebuild_cache.dir
-/mnt/d/Projects/auto-complete/cmake-build-release-linux/CMakeFiles/autocomplete.dir
-/mnt/d/Projects/auto-complete/cmake-build-release-linux/CMakeFiles/edit_cache.dir
