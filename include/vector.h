@@ -9,7 +9,7 @@ struct vector {
 };
 typedef struct vector Vector;
 
-Vector vector_create(unsigned length, unsigned item_size);
+Vector* vector_create(unsigned length, unsigned item_size);
 
 void* vector_get(Vector* vec, unsigned index);
 
