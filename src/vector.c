@@ -5,6 +5,7 @@
 #include "../include/vector.h"
 
 Vector* vector_create(unsigned length) {
+    // Allocate memory for self
     Vector* vec = (Vector*)malloc(sizeof(Vector));
     if (vec == NULL) {
         fprintf(stderr, "[ERROR] Bad vector memory allocation\n");
@@ -43,6 +44,7 @@ void vector_set(Vector* vec, unsigned index, void* item) {
         exit(1);
     }
 
+    // Set item by index
     vec->data[index] = item;
 }
 

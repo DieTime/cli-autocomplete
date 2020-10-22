@@ -1,18 +1,21 @@
 #include <stdio.h>
 
 #include "include/tree.h"
-#include "include/autocomplete.h"
+#include "include/predictions.h"
+
+// TODO Add safe node free for freeing vector items equally
 
 int main() {
     Tree* tree = tree_create("../config.txt");
 
-    Tokens* vector = get_predictions(tree, "git c");
-    for (int i = 0; i < vector->length; i++) {
-        printf("%s, ", (char*)vector_get(vector, i));
+    Predictions* pred = predictions_create(tree, "git commit ");
+    for (int i = 0; i < pred->tokens->length; i++) {
+        printf("\"%s\", ", (char*)vector_get(pred->tokens, i));
     }
     printf("\n");
+    printf("status = %d\n", pred->type);
 
-    free_tokens(vector);
+    predictions_free(pred);
     tree_free(tree);
     return 0;
 }
