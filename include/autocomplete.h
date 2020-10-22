@@ -2,8 +2,17 @@
 #define AUTOCOMPLETE_AUTOCOMPLETE_H
 
 #include "tree.h"
-#include "token_vector.h"
+#include "vector.h"
 
-TokenVector* get_predictions(Tree* t, char* input);
+typedef Vector Tokens;
+
+char* token_create(char* str, unsigned str_len);
+
+void free_tokens(Tokens* tokens);
+
+Tokens* split(char *str, char delimiter);
+
+Tokens* get_predictions(Tree* t, char* input);
+
 
 #endif // AUTOCOMPLETE_AUTOCOMPLETE_H

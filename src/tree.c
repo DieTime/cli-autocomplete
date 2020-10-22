@@ -2,8 +2,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#define MAX_OF(x, y) (((x) > (y)) ? (x) : (y))
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -37,8 +35,8 @@ Tree* tree_create(const char* filepath) {
     tree->head = node_create("\0", buff_length);
 
     // Vector of root nodes for parsing
-    NodeVector* root_nodes = node_vector_create(1);
-    node_vector_push(root_nodes, tree->head);
+    Vector* root_nodes = vector_create(1);
+    vector_push(root_nodes, (void*)tree->head);
 
     // Try open file for reading
     FILE* config = fopen(filepath, "r");
@@ -46,7 +44,7 @@ Tree* tree_create(const char* filepath) {
         fprintf(stderr, "[ERROR] Can't open file %s\n", filepath);
         free(buff);
         tree_free(tree);
-        node_vector_free(root_nodes);
+        vector_free(root_nodes);
         return NULL;
     }
 
@@ -61,7 +59,7 @@ Tree* tree_create(const char* filepath) {
         if (character == '\t') {
             fprintf(stderr, "[ERROR] Tab character detected in line %d, use a sequence of spaces\n", line_counter);
             fclose(config);
-            node_vector_free(root_nodes);
+            vector_free(root_nodes);
             tree_free(tree);
             return NULL;
         }
@@ -81,7 +79,7 @@ Tree* tree_create(const char* filepath) {
         if (space_counter % MAX_OF(tab_length, 1) != 0) {
             fprintf(stderr, "[ERROR] Incorrect tab length in line %d\n", line_counter);
             fclose(config);
-            node_vector_free(root_nodes);
+            vector_free(root_nodes);
             tree_free(tree);
             free(buff);
             return NULL;
@@ -101,18 +99,18 @@ Tree* tree_create(const char* filepath) {
         Node* n = node_create(buff, buff_length);
 
         // Push node to tree
-        node_vector_push(node_vector_get(root_nodes, tab_count)->children, n);
+        vector_push(((Node*)vector_get(root_nodes, tab_count))->children, (void*)n);
 
         // Add token to root tokens vector by index as tab count
         if (tab_count + 1 < root_nodes->length) {
-            node_vector_set(root_nodes, tab_count + 1, n);
+            vector_set(root_nodes, tab_count + 1, n);
         }
         else if (tab_count + 1 == root_nodes->length) {
-            node_vector_push(root_nodes, n);
+            vector_push(root_nodes, (void*)n);
         } else {
             fprintf(stderr, "[ERROR] The token on line %d does not belong to any token\n", line_counter);
             fclose(config);
-            node_vector_free(root_nodes);
+            vector_free(root_nodes);
             tree_free(tree);
             free(buff);
             return NULL;
@@ -126,7 +124,7 @@ Tree* tree_create(const char* filepath) {
 
     // Remove temporary variables
     fclose(config);
-    node_vector_free(root_nodes);
+    vector_free(root_nodes);
     free(buff);
 
     // Return tree

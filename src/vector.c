@@ -4,7 +4,7 @@
 
 #include "../include/vector.h"
 
-Vector* vector_create(unsigned length, unsigned item_size) {
+Vector* vector_create(unsigned length) {
     Vector* vec = (Vector*)malloc(sizeof(Vector));
     if (vec == NULL) {
         fprintf(stderr, "[ERROR] Bad vector memory allocation\n");
@@ -13,11 +13,10 @@ Vector* vector_create(unsigned length, unsigned item_size) {
 
     // Setup vector capacity and length
     vec->length = 0;
-    vec->capacity = length;
-    vec->item_size = item_size;
+    vec->capacity = MAX_OF(length, 1);
 
     // Allocate memory for data field
-    vec->data = malloc(length * item_size);
+    vec->data = (void**)malloc(sizeof(void*) * length);
     if (vec->data == NULL) {
         fprintf(stderr, "[ERROR] Bad vector memory allocation\n");
         exit(1);
@@ -34,7 +33,7 @@ void* vector_get(Vector* vec, unsigned index) {
     }
 
     // Return node by index
-    return vec->data + index * vec->item_size;
+    return vec->data[index];
 }
 
 void vector_set(Vector* vec, unsigned index, void* item) {
@@ -44,14 +43,14 @@ void vector_set(Vector* vec, unsigned index, void* item) {
         exit(1);
     }
 
-    memcpy(vec->data + index * vec->item_size, item, vec->item_size);
+    vec->data[index] = item;
 }
 
 void vector_push(Vector* vec, void* item) {
     // Reallocate longer memory if capacity runs out
     if (vec->length >= vec->capacity) {
         vec->capacity = (vec->capacity + 1) * 2;
-        vec->data = (void*)realloc(vec->data, vec->capacity * vec->item_size);
+        vec->data = (void**)realloc(vec->data, vec->capacity * sizeof(void*));
         if (vec->data == NULL) {
             fprintf(stderr, "[ERROR] Bad vector memory reallocation\n");
             exit(1);
@@ -59,8 +58,7 @@ void vector_push(Vector* vec, void* item) {
     }
 
     // Add node and increase length
-    memcpy(vec->data + vec->length * vec->item_size, item, vec->item_size);
-    vec->length += 1;
+    vec->data[vec->length++] = item;
 }
 
 void vector_free(Vector* vec) {

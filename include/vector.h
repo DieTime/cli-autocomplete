@@ -1,15 +1,16 @@
 #ifndef AUTOCOMPLETE_VECTOR_H
 #define AUTOCOMPLETE_VECTOR_H
 
+#define MAX_OF(x, y) (((x) > (y)) ? (x) : (y))
+
 struct vector {
-    void*    data;
+    void**   data;
     unsigned capacity;
     unsigned length;
-    unsigned item_size;
 };
 typedef struct vector Vector;
 
-Vector* vector_create(unsigned length, unsigned item_size);
+Vector* vector_create(unsigned length);
 
 void* vector_get(Vector* vec, unsigned index);
 

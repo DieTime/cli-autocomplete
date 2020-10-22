@@ -2,11 +2,11 @@
 #ifndef AUTOCOMPLETE_NODE_H
 #define AUTOCOMPLETE_NODE_H
 
-#include "node_vector.h"
+#include "vector.h"
 
 struct node {
     char* token;
-    struct node_vector* children;
+    struct vector* children;
 };
 typedef struct node Node;
 
