@@ -2,6 +2,7 @@
 
 #include "include/tree.h"
 #include "include/token_vector.h"
+#include "include/autocomplete.h"
 
 void print_tree(Node* head) {
     printf("%s -> ", head->token);
@@ -13,11 +14,11 @@ void print_tree(Node* head) {
 
 int main() {
     Tree* tree = tree_create("../config.txt");
-    print_tree(tree->head);
-    tree_free(tree);
 
-    TokenVector* tokens = token_vector_create("hello world ", ' ');
-    token_vector_print(tokens);
-    token_vector_free(tokens);
+    TokenVector* maybe = get_predictions(tree, "git ");
+    token_vector_print(maybe);
+    token_vector_free(maybe);
+
+    tree_free(tree);
     return 0;
 }

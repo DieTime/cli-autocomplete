@@ -4,7 +4,7 @@
 
 #include "../include/token_vector.h"
 
-TokenVector* token_vector_create(char *str, char delimiter) {
+TokenVector* token_vector_create(unsigned capacity) {
     // Allocate memory for self
     TokenVector* tv = (TokenVector*)malloc(sizeof(TokenVector));
     if (tv == NULL) {
@@ -13,7 +13,7 @@ TokenVector* token_vector_create(char *str, char delimiter) {
     }
 
     // Allocate memory for data field
-    tv->data = (char**)malloc(sizeof(char*));
+    tv->data = (char**)malloc(sizeof(char*) * capacity);
     if (tv->data == NULL) {
         fprintf(stderr, "[ERROR] Bad token vector memory allocation\n");
         exit(1);
@@ -21,7 +21,14 @@ TokenVector* token_vector_create(char *str, char delimiter) {
 
     // Setup fields
     tv->length = 0;
-    tv->capacity = 1;
+    tv->capacity = capacity;
+
+    return tv;
+}
+
+TokenVector* token_vector_parse(char *str, char delimiter) {
+    // Create token vector
+    TokenVector* tv = token_vector_create(1);
 
     char prev_char = delimiter;
 
@@ -35,13 +42,7 @@ TokenVector* token_vector_create(char *str, char delimiter) {
             }
 
             // Create token
-            char* token = (char*)malloc(sizeof(char) * (token_length + 1));
-            if (token == NULL) {
-                fprintf(stderr, "[ERROR] Memory token memory allocation\n");
-                exit(0);
-            }
-            memcpy(token, str + i, token_length);
-            token[token_length] = '\0';
+            char* token = token_create(str + i, token_length);
 
             // Add token to vector
             token_vector_push(tv, token);
@@ -116,4 +117,17 @@ char* token_vector_get(TokenVector* tv, unsigned index) {
 
     // Return node by index
     return tv->data[index];
+}
+
+char* token_create(char* str, unsigned str_len) {
+    char* token = (char*)malloc(sizeof(char) * str_len + 1);
+    if (token == NULL) {
+        fprintf(stderr, "[ERROR] Memory token memory allocation\n");
+        exit(0);
+    }
+
+    memcpy(token, str, str_len);
+    token[str_len] = '\0';
+
+    return token;
 }
