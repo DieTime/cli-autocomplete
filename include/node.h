@@ -2,7 +2,7 @@
 #ifndef AUTOCOMPLETE_NODE_H
 #define AUTOCOMPLETE_NODE_H
 
-#include "vector.h"
+#include "node_vector.h"
 
 struct node {
     char* token;
