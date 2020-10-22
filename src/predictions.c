@@ -145,7 +145,7 @@ Predictions* predictions_create(Tree* t, char* input) {
     }
 
     // Free all input tokens vector
-    for (int i = 0; i < tokens->length; i++) {
+    for (unsigned i = 0; i < tokens->length; i++) {
         free(vector_get(tokens, i));
     }
     vector_free(tokens);
