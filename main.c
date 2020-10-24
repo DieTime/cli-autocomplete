@@ -4,6 +4,7 @@
 #include "include/predictions.h"
 
 // TODO Add safe node free for freeing vector items equally
+// TODO Change character in tree constructor integer
 
 int main() {
     Tree* tree = tree_create("../config.txt");
