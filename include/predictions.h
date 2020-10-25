@@ -15,7 +15,7 @@ typedef enum predict_type PredictType;
 
 struct predictions {
     PredictType type;
-    Vector* tokens;
+    Tokens* tokens;
 };
 typedef struct predictions Predictions;
 
@@ -27,5 +27,6 @@ Tokens* split(char *str, char delimiter);
 
 char* token_create(char* str, unsigned str_len);
 
+void tokens_free(Tokens* tokens);
 
 #endif // AUTOCOMPLETE_PREDICTIONS_H

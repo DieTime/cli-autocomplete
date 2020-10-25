@@ -8,8 +8,51 @@
 #include "../include/tree.h"
 
 Tree* tree_create(const char* filepath) {
+    int character; // Variable for reading char by char
+
+    unsigned buff_length = 0;  // Max token length
+    unsigned buff_counter = 0; // Variable for getting max token length
+
+    // Try open file for reading
+    FILE* config = fopen(filepath, "r");
+    if (config == NULL) {
+        fprintf(stderr, "[ERROR] Can't open file %s\n", filepath);
+        exit(0);
+    }
+
+    // Check for empty config file
+    character = fgetc(config);
+    if (character == EOF) {
+        fclose(config);
+        fprintf(stderr, "[ERROR] %s file is empty\n", filepath);
+        exit(0);
+    }
+    ungetc(character, config);
+
     // Get max token length
-    unsigned buff_length = 64;
+    while (character != EOF) {
+        buff_counter = 0;
+
+        while (character == ' ') {
+            character = fgetc(config);
+        }
+
+        // Count length of new token
+        while (character != '\n' && character != '\r' && character != EOF) {
+            buff_counter += 1;
+            character = fgetc(config);
+        }
+
+        // Update token length if we need
+        if (buff_counter > buff_length) {
+            // +1 for null terminated symbol
+            buff_length = buff_counter + 1;
+        }
+
+        while (character != ' ' && character != EOF) {
+            character = fgetc(config);
+        }
+    }
 
     // Create buffer for parsing
     char* buff = (char*)malloc(sizeof(char) * buff_length);
@@ -24,8 +67,6 @@ Tree* tree_create(const char* filepath) {
     unsigned tab_count;        // Count of tabulations in line
     unsigned line_counter = 0; // Counter of lines in config file
 
-    char character; // Variable for reading char by char
-
     // Initialize tree and tree head
     Tree* tree = (Tree*)malloc(sizeof(Tree));
     if (tree == NULL) {
@@ -38,18 +79,13 @@ Tree* tree_create(const char* filepath) {
     Vector* root_nodes = vector_create(1);
     vector_push(root_nodes, (void*)tree->head);
 
-    // Try open file for reading
-    FILE* config = fopen(filepath, "r");
-    if (config == NULL) {
-        fprintf(stderr, "[ERROR] Can't open file %s\n", filepath);
-        free(buff);
-        tree_free(tree);
-        vector_free(root_nodes);
-        return NULL;
-    }
+    // Set file cursor to the start
+    fseek(config, SEEK_SET, 0);
+
+    int error = 0;  // Flag for error handling
 
     // Start parsing
-    character = (char)fgetc(config);
+    character = fgetc(config);
     while (character != EOF) {
         line_counter += 1;
         space_counter = 0;
@@ -58,16 +94,14 @@ Tree* tree_create(const char* filepath) {
         // Don't use tab character!!!
         if (character == '\t') {
             fprintf(stderr, "[ERROR] Tab character detected in line %d, use a sequence of spaces\n", line_counter);
-            fclose(config);
-            vector_free(root_nodes);
-            tree_free(tree);
-            return NULL;
+            error = 1;
+            break;
         }
 
         // Get space count
         while (character == ' ') {
             space_counter += 1;
-            character = (char)fgetc(config);
+            character = fgetc(config);
         }
 
         // Init correct tab length
@@ -78,11 +112,8 @@ Tree* tree_create(const char* filepath) {
         // Check count of spaces for correctness
         if (space_counter % MAX_OF(tab_length, 1) != 0) {
             fprintf(stderr, "[ERROR] Incorrect tab length in line %d\n", line_counter);
-            fclose(config);
-            vector_free(root_nodes);
-            tree_free(tree);
-            free(buff);
-            return NULL;
+            error = 1;
+            break;
         }
 
         // Get tabulations count;
@@ -90,8 +121,8 @@ Tree* tree_create(const char* filepath) {
 
         // Get token
         while (character != '\n' && character != '\r' && character != EOF) {
-            buff[buff_i++] = character;
-            character = (char)fgetc(config);
+            buff[buff_i++] = (char)character;
+            character = fgetc(config);
         }
         buff[buff_i] = '\0';
 
@@ -109,16 +140,13 @@ Tree* tree_create(const char* filepath) {
             vector_push(root_nodes, (void*)n);
         } else {
             fprintf(stderr, "[ERROR] The token on line %d does not belong to any token\n", line_counter);
-            fclose(config);
-            vector_free(root_nodes);
-            tree_free(tree);
-            free(buff);
-            return NULL;
+            error = 1;
+            break;
         }
 
         // Go to next line
         while (character != ' ' && character != EOF) {
-            character = (char)fgetc(config);
+            character = fgetc(config);
         }
     }
 
@@ -126,6 +154,12 @@ Tree* tree_create(const char* filepath) {
     fclose(config);
     vector_free(root_nodes);
     free(buff);
+
+    // Free tree and exit if error
+    if (error) {
+        tree_free(tree);
+        exit(0);
+    }
 
     // Return tree
     return tree;

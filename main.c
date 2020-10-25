@@ -3,9 +3,7 @@
 #include "include/tree.h"
 #include "include/predictions.h"
 
-// TODO Add safe node free for freeing vector items equally
-// TODO Change character in tree constructor integer
-// TODO Handling errors with flag for DRY
+// TODO Fix error checking if tab diff > 1
 
 int main() {
     Tree* tree = tree_create("../config.txt");

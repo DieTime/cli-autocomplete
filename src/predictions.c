@@ -144,23 +144,27 @@ Predictions* predictions_create(Tree* t, char* input) {
         pred->type = pred->tokens->length > 0 ? PROBABLY : FAILURE;
     }
 
-    // Free all input tokens vector
-    for (unsigned i = 0; i < tokens->length; i++) {
-        free(vector_get(tokens, i));
-    }
-    vector_free(tokens);
+    // Free input tokens
+    tokens_free(tokens);
 
     // Return result
     return pred;
 }
 
 void predictions_free(Predictions* predict) {
-    // Free all tokens in vector
-    for (unsigned i = 0; i < predict->tokens->length; i++) {
-        free(vector_get(predict->tokens, i));
+    // Free all tokens
+    tokens_free(predict->tokens);
+
+    // Free self
+    free(predict);
+}
+
+void tokens_free(Tokens* tokens) {
+    // Free all input tokens vector
+    for (unsigned i = 0; i < tokens->length; i++) {
+        free(vector_get(tokens, i));
     }
 
-    // Free vector and self
-    vector_free(predict->tokens);
-    free(predict);
+    // Free self
+    vector_free(tokens);
 }
