@@ -5,6 +5,7 @@
 
 // TODO Add safe node free for freeing vector items equally
 // TODO Change character in tree constructor integer
+// TODO Handling errors with flag for DRY
 
 int main() {
     Tree* tree = tree_create("../config.txt");
