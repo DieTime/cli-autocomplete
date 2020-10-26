@@ -15,5 +15,6 @@ int main() {
 
     predictions_free(pred);
     tree_free(tree);
+
     return 0;
 }
