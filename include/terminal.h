@@ -26,4 +26,10 @@ void color_print(char* text, COLOR_TYPE color);
 
 int getch_();
 
+void clear_line();
+
+void set_cursor(int x, int y);
+
+short get_cursor_y();
+
 #endif //AUTOCOMPLETE_TERMINAL_H
