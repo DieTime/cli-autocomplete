@@ -3,8 +3,6 @@
 #include "include/tree.h"
 #include "include/predictions.h"
 
-// TODO Fix error checking if tab diff > 1
-
 int main() {
     Tree* tree = tree_create("../config.txt");
 

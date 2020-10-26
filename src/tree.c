@@ -62,10 +62,10 @@ Tree* tree_create(const char* filepath) {
     }
     unsigned buff_i;
 
-    unsigned space_counter;    // Counter of spaces before token
-    unsigned tab_length = 0;   // Count of spaces in one tabulation
-    unsigned tab_count;        // Count of tabulations in line
-    unsigned line_counter = 0; // Counter of lines in config file
+    unsigned space_counter;       // Counter of spaces before token
+    unsigned tab_length = 0;      // Count of spaces in one tabulation
+    unsigned tab_count;           // Count of tabulations in line
+    unsigned line_counter = 0;    // Counter of lines in config file
 
     // Initialize tree and tree head
     Tree* tree = (Tree*)malloc(sizeof(Tree));
@@ -130,6 +130,11 @@ Tree* tree_create(const char* filepath) {
         Node* n = node_create(buff, buff_length);
 
         // Push node to tree
+        if (tab_count >= root_nodes->length) {
+            fprintf(stderr, "[ERROR] The token on line %d does not belong to any token\n", line_counter);
+            error = 1;
+            break;
+        }
         vector_push(((Node*)vector_get(root_nodes, tab_count))->children, (void*)n);
 
         // Add token to root tokens vector by index as tab count
@@ -138,10 +143,6 @@ Tree* tree_create(const char* filepath) {
         }
         else if (tab_count + 1 == root_nodes->length) {
             vector_push(root_nodes, (void*)n);
-        } else {
-            fprintf(stderr, "[ERROR] The token on line %d does not belong to any token\n", line_counter);
-            error = 1;
-            break;
         }
 
         // Go to next line
