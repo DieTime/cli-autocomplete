@@ -1,6 +1,6 @@
 git
     init
-        [repository name]
+        [repository_name]
     clone
         [url]
     add
@@ -8,12 +8,13 @@ git
         --all
     commit
         -m
-            "[commit message]"
+            "[commit_message]"
         -a
-            "[commit message]"
+            "[commit_message]"
     diff
         -staged
-        [first branch] [second branch]
+        [first_branch]
+            [second_branch]
     reset
         [file]
         [commit]
@@ -30,23 +31,25 @@ git
         [commit]
     branch
         -d
-            [branch name]
-        [branch name]
+            [branch_name]
+        [branch_name]
     checkout
         -b
-        [branch name]
+        [branch_name]
     merge
-        [branch name]
+        [branch_name]
     remote
         add
-            [variable name] [remote server link]
+            [repo_name]
+                [remote_server_link]
     push
         -u
-            [variable name] [branch]
-        [variable name] [branch]
-        --all
+            [repo_name]
+                [branch]
+        [repo_name]
+            [branch]
     pull
-        [repository link]
+        [repo_name]
     stash
         save
         pop

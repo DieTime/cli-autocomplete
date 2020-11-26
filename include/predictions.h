@@ -1,3 +1,4 @@
+#pragma once
 #ifndef AUTOCOMPLETE_PREDICTIONS_H
 #define AUTOCOMPLETE_PREDICTIONS_H
 
@@ -19,7 +20,7 @@ struct predictions {
 };
 typedef struct predictions Predictions;
 
-Predictions* predictions_create(Tree* t, char* input);
+Predictions *predictions_create(Tree *t, char *input, char *optional_brackets);
 
 void predictions_free(Predictions* predict);
 
@@ -28,5 +29,7 @@ Tokens* split(char *str, char delimiter);
 char* token_create(char* str, unsigned str_len);
 
 void tokens_free(Tokens* tokens);
+
+int contain_chars(const char* str, const char* chars);
 
 #endif // AUTOCOMPLETE_PREDICTIONS_H

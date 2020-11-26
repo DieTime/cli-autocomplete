@@ -121,6 +121,13 @@ Tree* tree_create(const char* filepath) {
 
         // Get token
         while (character != '\n' && character != '\r' && character != EOF) {
+            // Handle space symbol in token error
+            if (character == ' ' || character == '\t') {
+                fprintf(stderr, "[ERROR] Token in config file must not have spaces, line %d\n", line_counter);
+                tree_free(tree);
+                exit(1);
+            }
+
             buff[buff_i++] = (char)character;
             character = fgetc(config);
         }
@@ -159,7 +166,7 @@ Tree* tree_create(const char* filepath) {
     // Free tree and exit if error
     if (error) {
         tree_free(tree);
-        exit(0);
+        exit(1);
     }
 
     // Return tree

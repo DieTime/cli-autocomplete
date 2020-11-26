@@ -45,48 +45,9 @@ void color_print(char* text, COLOR_TYPE color) {
 #endif
 }
 
-int getch_() {
+#if defined(OS_UNIX)
+int _getch() {
     int character;
-
-#if defined(OS_WINDOWS)
-    DWORD mode, n;
-
-    HANDLE h_console = GetStdHandle(STD_INPUT_HANDLE );
-    if (h_console == NULL) {
-        fprintf(stderr, "[ERROR] Couldn't handle terminal\n");
-        exit(1);
-    }
-
-    // Backup terminal mode
-    if (GetConsoleMode(h_console, &mode ) == 0) {
-        fprintf(stderr, "[ERROR] Couldn't get terminal mode\n");
-        exit(1);
-    }
-
-    // Disable echo
-    if (SetConsoleMode(h_console, mode & ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT)) == 0) {
-        fprintf(stderr, "[ERROR] Couldn't set terminal mode\n");
-        exit(1);
-    }
-
-    // Read character
-    if (ReadConsole(h_console, &character, 1, &n, NULL) == 0) {
-        fprintf(stderr, "[ERROR] Couldn't get character from terminal\n");
-        exit(1);
-    }
-
-    // Validate reading
-    if (n != 1) {
-        fprintf(stderr, "[ERROR] The character was read from the terminal incorrectly\n");
-        exit(1);
-    }
-
-    // Reset terminal mode
-    if (SetConsoleMode(h_console, mode) == 0) {
-        fprintf(stderr, "[ERROR] Couldn't reset terminal mode\n");
-        exit(1);
-    }
-#elif defined(OS_UNIX)
     struct termios old_attr, new_attr;
 
     // Backup terminal attributes
@@ -111,38 +72,66 @@ int getch_() {
         fprintf(stderr, "[ERROR] Couldn't reset terminal attributes\n");
         exit(1);
     }
-#endif
 
     return character;
 }
+#endif
 
-void clear_line() {
+short terminal_width() {
 #if defined(OS_WINDOWS)
+    // Handle current terminal
     HANDLE h_console = GetStdHandle(STD_OUTPUT_HANDLE);
     if (h_console == NULL) {
         fprintf(stderr, "[ERROR] Couldn't handle terminal\n");
         exit(1);
     }
 
-    // Save current attributes
+    // Get current attributes
     CONSOLE_SCREEN_BUFFER_INFO console_info;
     if (GetConsoleScreenBufferInfo(h_console, &console_info) == 0) {
         fprintf(stderr, "[ERROR] Couldn't get terminal info\n");
         exit(1);
     }
 
-    short width = console_info.dwSize.X;
-
-    printf("\r");
-    for (short i = 0; i < width - 1; i++) {
-        printf(" ");
-    }
+    // Return current width
+    return console_info.dwSize.X;
 #elif defined(OS_UNIX)
-    printf("\033[2K");
+    struct winsize t_size;
+
+    if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &t_size) == -1) {
+        fprintf(stderr, "[ERROR] Couldn't get terminal info\n");
+        exit(1);
+    }
+
+    return (short)t_size.ws_col;
 #endif
 }
 
-void set_cursor(int x, int y) {
+void clear_line() {
+#if defined(OS_WINDOWS)
+    // Get current terminal width
+    short width = terminal_width();
+    if (width < 1) {
+        fprintf(stderr, "[ERROR] Size of terminal is too small\n");
+        exit(1);
+    }
+
+    // Create long empty string
+    char* empty = (char*)malloc(sizeof(char) * width);
+    memset(empty, ' ', width);
+    empty[width - 1] = '\0';
+
+    // Clear line
+    printf("\r%s\r", empty);
+
+    // Free line
+    free(empty);
+#elif defined(OS_UNIX)
+    printf("\033[2K\r");
+#endif
+}
+
+void set_cursor_x(short x) {
 #if defined(OS_WINDOWS)
     HANDLE h_console = GetStdHandle(STD_OUTPUT_HANDLE);
     if (h_console == NULL) {
@@ -153,7 +142,7 @@ void set_cursor(int x, int y) {
     // Create position
     COORD xy;
     xy.X = x - 1;
-    xy.Y = y;
+    xy.Y = get_cursor_y();
 
     // Set cursor position
     if (SetConsoleCursorPosition(h_console, xy) == 0) {
@@ -161,7 +150,7 @@ void set_cursor(int x, int y) {
         exit(1);
     }
 #elif defined(OS_UNIX)
-    printf("\033[%d;%dH", y, x);
+    printf("\033[%d;%dH", get_cursor_y(), x);
 #endif
 }
 
@@ -210,7 +199,7 @@ short get_cursor_y() {
     // Get ^[[{this};1R value
 
     for (ch = 0; ch != 'R'; i++) {
-        if (read(STDIN_FILENO, &ch, 1) == 1) {
+        if (read(STDIN_FILENO, &ch, 1) != 1) {
             fprintf(stderr, "[ERROR] Couldn't read cursor information");
             exit(1);
         }

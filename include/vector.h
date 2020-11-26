@@ -1,3 +1,4 @@
+#pragma once
 #ifndef AUTOCOMPLETE_VECTOR_H
 #define AUTOCOMPLETE_VECTOR_H
 

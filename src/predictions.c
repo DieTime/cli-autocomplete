@@ -59,7 +59,7 @@ Tokens* split(char *str, char delimiter) {
     return vec;
 }
 
-Predictions* predictions_create(Tree* t, char* input) {
+Predictions *predictions_create(Tree *t, char *input, char *optional_brackets) {
     // Initialize result predictions
     Predictions* pred = (Predictions*)malloc(sizeof(Predictions));
     if (pred == NULL) {
@@ -75,6 +75,12 @@ Predictions* predictions_create(Tree* t, char* input) {
     Node* curr_node = t->head;
     Node* prev_node = t->head;
     Vector* curr_children = curr_node->children;
+
+    // Don't show predictions if last word contains optional brackets
+    if (contain_chars((char*)vector_get(tokens, tokens->length - 1), optional_brackets)) {
+        pred->type = FAILURE;
+        return pred;
+    }
 
     // Finding vector in tree by input tokens
     for (unsigned i = 0; i < tokens->length - 1; i++) {
@@ -112,14 +118,20 @@ Predictions* predictions_create(Tree* t, char* input) {
         }
     }
 
-    // Set type if words was found or search
-    // probably words if words wasn't found
+    // Set EXACTLY type for predictions if words was found
+    // or search probably words without optional brackets
+    // if words wasn't found
     if (pred->tokens->length > 0) {
         pred->type = EXACTLY;
-    } else {
+    } else if (pred->type != FAILURE) {
         for (unsigned i = 0; i < curr_children->length; i++) {
             char *probably_token = ((Node *) vector_get(curr_children, i))->token;
             char *last_token = (char *) vector_get(tokens, tokens->length - 1);
+
+            // Skip if candidate contain one of symbols for optional values
+            if (contain_chars(probably_token, optional_brackets)) {
+                continue;
+            }
 
             // Total misses in probably token
             unsigned miss = 0;
@@ -167,4 +179,17 @@ void tokens_free(Tokens* tokens) {
 
     // Free self
     vector_free(tokens);
+}
+
+int contain_chars(const char* str, const char* chars) {
+    // Checking for given characters in a string
+    for (unsigned i = 0; str[i] != '\0'; i++) {
+        for (unsigned j = 0; chars[j] != '\0'; j++) {
+            if (str[i] == chars[i]) {
+                return 1;
+            }
+        }
+    }
+
+    return 0;
 }
