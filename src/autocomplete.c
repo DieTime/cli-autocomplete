@@ -1,8 +1,8 @@
 #include "../include/autocomplete.h"
 #include "../include/predictions.h"
 
-char* input(Tree* rules, char* title, COLOR_TYPE title_color,COLOR_TYPE predict_color,
-            COLOR_TYPE main_color, char* optional_brackets) {
+char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color,COLOR_TYPE predict_color,
+                   COLOR_TYPE main_color, char* optional_brackets) {
     // Initialize buffer for reading
     short buff_len = 0;
     short buff_cap = terminal_width();
@@ -101,6 +101,7 @@ char* input(Tree* rules, char* title, COLOR_TYPE title_color,COLOR_TYPE predict_
 
                 // Make sure the candidate has no optional brackets
                 if (!contain_chars(prediction, optional_brackets)) {
+
                     // Handle buffer overflow
                     if (buff_len + predict_len - space_offset >= buff_cap) {
                         fprintf(stderr, "\n[ERROR] Input string more then terminal width\n");
@@ -174,12 +175,9 @@ char* input(Tree* rules, char* title, COLOR_TYPE title_color,COLOR_TYPE predict_
         }
 
         // Add character to buffer considering
-        // offset if any key was pressed excluding
-        // the repeated space
-        else if (ch != SPACE || buff[buff_len - 1] != ' ') {
-            if (ch == SPACE) {
-                hint_num = 0;
-            }
+        // offset if any key was pressed
+        else {
+            hint_num = ch == SPACE ? 0 : hint_num;
             buff[buff_len++] = (char)ch;
         }
 
@@ -188,6 +186,11 @@ char* input(Tree* rules, char* title, COLOR_TYPE title_color,COLOR_TYPE predict_
     }
 
     return buff;
+}
+
+char* input(Tree* rules) {
+    return custom_input(rules, "", DEFAULT_TITLE_COLOR, DEFAULT_PREDICT_COLOR,
+                        DEFAULT_MAIN_COLOR, "");
 }
 
 int is_ignore_key(int ch) {
@@ -210,3 +213,4 @@ int is_ignore_key(int ch) {
 
     return 0;
 }
+

@@ -45,8 +45,10 @@
 #define SPACE 32
 #define TAB 9
 
-char* input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE predict_color,
+char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE predict_color,
             COLOR_TYPE main_color, char* optional_brackets);
+
+char* input(Tree* rules);
 
 int is_ignore_key(int ch);
 

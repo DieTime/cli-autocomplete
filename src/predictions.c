@@ -185,7 +185,7 @@ int contain_chars(const char* str, const char* chars) {
     // Checking for given characters in a string
     for (unsigned i = 0; str[i] != '\0'; i++) {
         for (unsigned j = 0; chars[j] != '\0'; j++) {
-            if (str[i] == chars[i]) {
+            if (str[i] == chars[j]) {
                 return 1;
             }
         }

@@ -58,6 +58,7 @@ Tree* tree_create(const char* filepath) {
     char* buff = (char*)malloc(sizeof(char) * buff_length);
     if (buff == NULL) {
         fprintf(stderr, "[ERROR] Bad buffer memory allocation\n");
+        fclose(config);
         exit(1);
     }
     unsigned buff_i;
@@ -71,9 +72,11 @@ Tree* tree_create(const char* filepath) {
     Tree* tree = (Tree*)malloc(sizeof(Tree));
     if (tree == NULL) {
         fprintf(stderr, "[ERROR] Bad tree memory allocation\n");
+        fclose(config);
+        free(buff);
         exit(1);
     }
-    tree->head = node_create("\0", buff_length);
+    tree->head = node_create("\0", 1);
 
     // Vector of root nodes for parsing
     Vector* root_nodes = vector_create(1);
@@ -123,14 +126,20 @@ Tree* tree_create(const char* filepath) {
         while (character != '\n' && character != '\r' && character != EOF) {
             // Handle space symbol in token error
             if (character == ' ' || character == '\t') {
-                fprintf(stderr, "[ERROR] Token in config file must not have spaces, line %d\n", line_counter);
-                tree_free(tree);
-                exit(1);
+                error = 1;
+                break;
             }
 
             buff[buff_i++] = (char)character;
             character = fgetc(config);
         }
+
+        // Handle error when getting token
+        if (error) {
+            fprintf(stderr, "[ERROR] Token in config file must not have spaces, line %d\n", line_counter);
+            break;
+        }
+
         buff[buff_i] = '\0';
 
         // Create node by token

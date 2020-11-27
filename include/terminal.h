@@ -27,6 +27,16 @@
     #error Unknown environment!
 #endif
 
+#if defined(OS_WINDOWS)
+    #define DEFAULT_TITLE_COLOR 160
+    #define DEFAULT_PREDICT_COLOR 8
+    #define DEFAULT_MAIN_COLOR 7
+#elif defined(OS_UNIX)
+    #define DEFAULT_TITLE_COLOR "0;30;102"
+    #define DEFAULT_PREDICT_COLOR "90"
+    #define DEFAULT_MAIN_COLOR "0"
+#endif
+
 short terminal_width();
 
 void color_print(char* text, COLOR_TYPE color);
