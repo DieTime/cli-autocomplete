@@ -1,7 +1,7 @@
 #include "../include/autocomplete.h"
 #include "../include/predictions.h"
 
-char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color,COLOR_TYPE predict_color,
+char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE predict_color,
                    COLOR_TYPE main_color, char* optional_brackets) {
     // Initialize buffer for reading
     short buff_len = 0;
@@ -213,4 +213,3 @@ int is_ignore_key(int ch) {
 
     return 0;
 }
-

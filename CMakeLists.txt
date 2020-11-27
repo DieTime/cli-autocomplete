@@ -1,13 +1,24 @@
 cmake_minimum_required(VERSION 3.13)
-project(autocomplete C)
+project(CLI-Autocomplete VERSION 2.0.0)
 
-set(CMAKE_C_STANDARD 11)
-set (CMAKE_C_FLAGS "-Wall")
+set(CMAKE_C_STANDARD 99)
 
-if (UNIX)
-    set (CMAKE_C_FLAGS "-fsanitize=address")
-endif (UNIX)
+file(GLOB_RECURSE SOURCES src/*.c)
+file(GLOB_RECURSE INCLUDE include/*.h)
+set(EXAMPLE_1 examples/default_input.c)
+set(EXAMPLE_2 examples/custom_input.c)
 
-file(GLOB SOURCES include/*.h src/*.c)
+add_executable(default ${EXAMPLE_1} ${SOURCES} ${INCLUDE})
+add_executable(custom ${EXAMPLE_2} ${SOURCES} ${INCLUDE})
 
-add_executable(autocomplete main.c ${SOURCES})
+if (WIN32)
+    set_target_properties(default PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/")
+    set_target_properties(custom PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/")
+elseif (UNIX)
+    set_target_properties(default PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/")
+    set_target_properties(custom PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/")
+endif()

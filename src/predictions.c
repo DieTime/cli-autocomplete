@@ -59,7 +59,7 @@ Tokens* split(char *str, char delimiter) {
     return vec;
 }
 
-Predictions *predictions_create(Tree *t, char *input, char *optional_brackets) {
+Predictions *predictions_create(Tree *rules, char *input, char *optional_brackets) {
     // Initialize result predictions
     Predictions* pred = (Predictions*)malloc(sizeof(Predictions));
     if (pred == NULL) {
@@ -72,8 +72,8 @@ Predictions *predictions_create(Tree *t, char *input, char *optional_brackets) {
     // Split input string to tokens
     Tokens* tokens = split(input, ' ');
 
-    Node* curr_node = t->head;
-    Node* prev_node = t->head;
+    Node* curr_node = rules->head;
+    Node* prev_node = rules->head;
     Vector* curr_children = curr_node->children;
 
     // Don't show predictions if last word contains optional brackets

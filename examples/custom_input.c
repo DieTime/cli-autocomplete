@@ -1,6 +1,13 @@
+#ifdef _MSC_VER
+    #ifndef _CRT_SECURE_NO_WARNINGS
+        #define _CRT_SECURE_NO_WARNINGS
+    #endif
+#endif
+
+
 #include <stdio.h>
 
-#include "include/autocomplete.h"
+#include "../include/autocomplete.h"
 
 int main() {
     // Parsing the configuration file
@@ -19,7 +26,7 @@ int main() {
     COLOR_TYPE main_color = "0";
 #endif
 
-    // Characters which optional values begin ( optional parameter )
+    // Characters which optional values begin
     char* optional_brackets = "[{<";
 
     fprintf(
@@ -41,16 +48,28 @@ int main() {
 
     // Listening process
     while (1) {
-        // Prepare line title ( optional parameter )
+        // Prepare line title
         sprintf(title, "%s [%u]", "git", command_counter);
 
+        // Get user input
         char* str = custom_input(rules, title, title_color, predict_color, main_color, optional_brackets);
         printf("\n%s\n", str);
+
+        // Stop listening if user need
+        if (strcmp(str, "") == 0) {
+            free(str);
+            break;
+        }
+
+        // Free user input string
         free(str);
 
+        // Increase command counter for title
         command_counter += 1;
     }
 
+    // Free rules
     tree_free(rules);
+
     return 0;
 }

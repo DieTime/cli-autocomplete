@@ -45,11 +45,41 @@
 #define SPACE 32
 #define TAB 9
 
+/**
+ * Gives the user a customizable convenient input
+ * interface with autocomplete
+ *
+ * @param rules - Parsed rules from config file
+ * @param title - The line printed before the input cursor
+ * @param title_color - Color type for title printing
+ * @param predict_color - Color type for prediction printing
+ * @param main_color - Color type for user input printing
+ * @param optional_brackets - Characters which optional values begin
+ *
+ * @return User input string
+ */
 char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE predict_color,
             COLOR_TYPE main_color, char* optional_brackets);
 
+
+/**
+ * Gives the user a simple convenient input
+ * interface with autocomplete
+ *
+ * @param rules - Parsed rules from config file
+ *
+ * @return User input string
+ */
 char* input(Tree* rules);
 
+/**
+ * Function for checking if input
+ * character in ignore list
+ *
+ * @param ch - Input character
+ *
+ * @return True if character in ignore list or False
+ */
 int is_ignore_key(int ch);
 
 #endif //AUTOCOMPLETE_AUTOCOMPLETE_H

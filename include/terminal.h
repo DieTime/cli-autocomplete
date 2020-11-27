@@ -37,17 +37,50 @@
     #define DEFAULT_MAIN_COLOR "0"
 #endif
 
+/**
+ * Function for getting current
+ * terminal width (cols count)
+ *
+ * @return Count of terminal cols
+ */
 short terminal_width();
 
+/**
+ * Printing text with color in terminal
+ *
+ * @param text - Printable text
+ * @param color - Color for printing
+ */
 void color_print(char* text, COLOR_TYPE color);
 
+/**
+ * Function for clear all content
+ * in current line
+ */
 void clear_line();
 
+/**
+ * Set cursor X position in current row
+ *
+ * @param x - Position for moving
+ */
 void set_cursor_x(short x);
 
+/**
+ * Function for getting current
+ * cursor Y position
+ *
+ * @return Current cursor Y position
+ */
 short get_cursor_y();
 
 #if defined(OS_UNIX)
+/**
+ * Implementation of getch() function
+ * for UNIX systems
+ *
+ * @return Pressed keyboard character
+ */
 int _getch();
 #endif
 
