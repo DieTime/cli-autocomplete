@@ -11,14 +11,7 @@ set(EXAMPLE_2 examples/custom_input.c)
 add_executable(default ${EXAMPLE_1} ${SOURCES} ${INCLUDE})
 add_executable(custom ${EXAMPLE_2} ${SOURCES} ${INCLUDE})
 
-if (WIN32)
-    set_target_properties(default PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/")
-    set_target_properties(custom PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/")
-elseif (UNIX)
-    set_target_properties(default PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/")
-    set_target_properties(custom PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/")
-endif()
+set_target_properties(default PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/examples")
+set_target_properties(custom PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/examples")

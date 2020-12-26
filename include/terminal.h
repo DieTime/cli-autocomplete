@@ -28,10 +28,12 @@
 #endif
 
 #if defined(OS_WINDOWS)
+    // https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c#answer-4053879
     #define DEFAULT_TITLE_COLOR 160
     #define DEFAULT_PREDICT_COLOR 8
     #define DEFAULT_MAIN_COLOR 7
 #elif defined(OS_UNIX)
+    // https://stackoverflow.com/questions/2616906/how-do-i-output-coloured-text-to-a-linux-terminal#answer-45300654
     #define DEFAULT_TITLE_COLOR "0;30;102"
     #define DEFAULT_PREDICT_COLOR "90"
     #define DEFAULT_MAIN_COLOR "0"

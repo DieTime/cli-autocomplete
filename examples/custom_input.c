@@ -4,7 +4,6 @@
     #endif
 #endif
 
-
 #include <stdio.h>
 
 #include "../include/autocomplete.h"
