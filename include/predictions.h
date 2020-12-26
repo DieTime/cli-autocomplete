@@ -2,6 +2,20 @@
 #ifndef AUTOCOMPLETE_PREDICTIONS_H
 #define AUTOCOMPLETE_PREDICTIONS_H
 
+#if defined(_WIN32) || defined(_WIN64)
+    #if defined(BUILD_STATIC)
+        #define LIB
+    #elif defined(BUILD_SHARED)
+        #define LIB extern __declspec(dllexport)
+    #else
+        #define LIB extern __declspec(dllimport)
+    #endif
+#elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
+    #define LIB extern __attribute__((visibility("default")))
+#else
+    #error unsupported platform
+#endif
+
 #include "tree.h"
 #include "vector.h"
 
@@ -34,13 +48,13 @@ typedef struct predictions Predictions;
  *
  * @return Predictions for current input
  */
-Predictions *predictions_create(Tree *rules, char *input, char *optional_brackets);
+LIB Predictions *predictions_create(Tree *rules, char *input, char *optional_brackets);
 
 /**
  * Deallocating prediction struct
  * @param predict - Struct for deallocating
  */
-void predictions_free(Predictions* predict);
+LIB void predictions_free(Predictions* predict);
 
 /**
  * Split string to tokens by delimiter
@@ -50,7 +64,7 @@ void predictions_free(Predictions* predict);
  *
  * @return Vector of tokens
  */
-Tokens* split(char *str, char delimiter);
+LIB Tokens* split(char *str, char delimiter);
 
 /**
  * Function for token creation
@@ -60,7 +74,7 @@ Tokens* split(char *str, char delimiter);
  *
  * @return Allocated token
  */
-char* token_create(char* str, unsigned str_len);
+LIB char* token_create(char* str, unsigned str_len);
 
 /**
  * Function for deallocating
@@ -68,7 +82,7 @@ char* token_create(char* str, unsigned str_len);
  *
  * @param tokens - Vector for deallocating
  */
-void tokens_free(Tokens* tokens);
+LIB void tokens_free(Tokens* tokens);
 
 /**
  * Function for checking if string
@@ -79,6 +93,6 @@ void tokens_free(Tokens* tokens);
  *
  * @return True if contains or False
  */
-int contain_chars(const char* str, const char* chars);
+LIB int contain_chars(const char* str, const char* chars);
 
 #endif // AUTOCOMPLETE_PREDICTIONS_H

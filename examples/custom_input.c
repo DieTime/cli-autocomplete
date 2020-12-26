@@ -10,7 +10,7 @@
 
 int main() {
     // Parsing the configuration file
-    Tree* rules = tree_create("../config.txt");
+    Tree* rules = tree_create("../../../config.txt");
 
 #if defined(OS_WINDOWS)
     // https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c#answer-4053879

@@ -10,10 +10,18 @@
 #if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN64)
     #ifndef OS_WINDOWS
         #define OS_WINDOWS
+        #if defined(BUILD_STATIC)
+            #define LIB
+        #elif defined(BUILD_SHARED)
+            #define LIB extern __declspec(dllexport)
+        #else
+            #define LIB extern __declspec(dllimport)
+        #endif
     #endif
 #elif defined(unix) || defined(__unix__) || defined(__unix)
     #ifndef OS_UNIX
         #define OS_UNIX
+        #define LIB extern __attribute__((visibility("default")))
     #endif
 #else
     #error Unknown environment!
@@ -58,7 +66,7 @@
  *
  * @return User input string
  */
-char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE predict_color,
+LIB char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE predict_color,
             COLOR_TYPE main_color, char* optional_brackets);
 
 
@@ -70,7 +78,7 @@ char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE 
  *
  * @return User input string
  */
-char* input(Tree* rules);
+LIB char* input(Tree* rules);
 
 /**
  * Function for checking if input
@@ -80,6 +88,6 @@ char* input(Tree* rules);
  *
  * @return True if character in ignore list or False
  */
-int is_ignore_key(int ch);
+LIB int is_ignore_key(int ch);
 
 #endif //AUTOCOMPLETE_AUTOCOMPLETE_H

@@ -4,6 +4,20 @@
 
 #include "vector.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+    #if defined(BUILD_STATIC)
+        #define LIB
+    #elif defined(BUILD_SHARED)
+        #define LIB extern __declspec(dllexport)
+    #else
+        #define LIB extern __declspec(dllimport)
+    #endif
+#elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
+    #define LIB extern __attribute__((visibility("default")))
+#else
+    #error unsupported platform
+#endif
+
 /**
  * Node of rules tree
  *
@@ -25,7 +39,7 @@ typedef struct node Node;
  *
  * @return Created Node
  */
-Node* node_create(char* token, unsigned token_length);
+LIB Node* node_create(char* token, unsigned token_length);
 
 
 /**
@@ -34,6 +48,6 @@ Node* node_create(char* token, unsigned token_length);
  *
  * @param node - Node for deallocating
  */
-void node_free(Node* node);
+LIB void node_free(Node* node);
 
 #endif // AUTOCOMPLETE_NODE_H

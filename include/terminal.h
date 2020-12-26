@@ -10,6 +10,13 @@
     #ifndef OS_WINDOWS
         #define OS_WINDOWS
         #define COLOR_TYPE uint16_t
+        #if defined(BUILD_STATIC)
+            #define LIB
+        #elif defined(BUILD_SHARED)
+            #define LIB extern __declspec(dllexport)
+        #else
+            #define LIB extern __declspec(dllimport)
+        #endif
 
         #include <windows.h>
         #include <conio.h>
@@ -18,6 +25,7 @@
     #ifndef OS_UNIX
         #define OS_UNIX
         #define COLOR_TYPE char*
+        #define LIB extern __attribute__((visibility("default")))
 
         #include <termios.h>
         #include <unistd.h>
@@ -45,7 +53,7 @@
  *
  * @return Count of terminal cols
  */
-short terminal_width();
+LIB short terminal_width();
 
 /**
  * Printing text with color in terminal
@@ -53,20 +61,20 @@ short terminal_width();
  * @param text - Printable text
  * @param color - Color for printing
  */
-void color_print(char* text, COLOR_TYPE color);
+LIB void color_print(char* text, COLOR_TYPE color);
 
 /**
  * Function for clear all content
  * in current line
  */
-void clear_line();
+LIB void clear_line();
 
 /**
  * Set cursor X position in current row
  *
  * @param x - Position for moving
  */
-void set_cursor_x(short x);
+LIB void set_cursor_x(short x);
 
 /**
  * Function for getting current
@@ -74,7 +82,7 @@ void set_cursor_x(short x);
  *
  * @return Current cursor Y position
  */
-short get_cursor_y();
+LIB short get_cursor_y();
 
 #if defined(OS_UNIX)
 /**
@@ -83,7 +91,7 @@ short get_cursor_y();
  *
  * @return Pressed keyboard character
  */
-int _getch();
+LIB int _getch();
 #endif
 
 #endif //AUTOCOMPLETE_TERMINAL_H

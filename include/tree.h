@@ -4,6 +4,20 @@
 
 #include "node.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+    #if defined(BUILD_STATIC)
+        #define LIB
+    #elif defined(BUILD_SHARED)
+        #define LIB extern __declspec(dllexport)
+    #else
+        #define LIB extern __declspec(dllimport)
+    #endif
+#elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
+    #define LIB extern __attribute__((visibility("default")))
+#else
+    #error unsupported platform
+#endif
+
 /**
  * Tree structure which contains
  * self head node
@@ -21,13 +35,13 @@ typedef struct tree Tree;
  *
  * @return Rules in the form of a tree
  */
-Tree* tree_create(const char* filepath);
+LIB Tree* tree_create(const char* filepath);
 
 /**
  * Function for tree deallocating
  *
  * @param tree - Tree structure for deallocating
  */
-void tree_free(Tree* tree);
+LIB void tree_free(Tree* tree);
 
 #endif // AUTOCOMPLETE_TREE_H

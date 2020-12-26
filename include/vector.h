@@ -4,6 +4,20 @@
 
 #define MAX_OF(x, y) (((x) > (y)) ? (x) : (y))
 
+#if defined(_WIN32) || defined(_WIN64)
+    #if defined(BUILD_STATIC)
+        #define LIB
+    #elif defined(BUILD_SHARED)
+        #define LIB extern __declspec(dllexport)
+    #else
+        #define LIB extern __declspec(dllimport)
+    #endif
+#elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
+    #define LIB extern __attribute__((visibility("default")))
+#else
+    #error unsupported platform
+#endif
+
 /**
  * Vector implementation for contain
  * pointers of allocated data
@@ -21,7 +35,7 @@ typedef struct vector Vector;
  * @param length - Initial length of vector
  * @return Vector structure
  */
-Vector* vector_create(unsigned length);
+LIB Vector* vector_create(unsigned length);
 
 /**
  * Function for peak value from
@@ -32,7 +46,7 @@ Vector* vector_create(unsigned length);
  *
  * @return Pointer of data by index
  */
-void* vector_get(Vector* vec, unsigned index);
+LIB void* vector_get(Vector* vec, unsigned index);
 
 /**
  * Function for setting value in
@@ -42,7 +56,7 @@ void* vector_get(Vector* vec, unsigned index);
  * @param index - Position of element
  * @param item - Pointer of data for setting
  */
-void vector_set(Vector* vec, unsigned index, void* item);
+LIB void vector_set(Vector* vec, unsigned index, void* item);
 
 /**
  * Function for append data to vector
@@ -50,12 +64,12 @@ void vector_set(Vector* vec, unsigned index, void* item);
  * @param vec - Vector for pushing
  * @param item - Item for pushing
  */
-void vector_push(Vector* vec, void* item);
+LIB void vector_push(Vector* vec, void* item);
 
 /**
  * Function for deallocating vector
  * @param vec - Vector for deallocating
  */
-void vector_free(Vector* vec);
+LIB void vector_free(Vector* vec);
 
 #endif //AUTOCOMPLETE_VECTOR_H
