@@ -1,5 +1,5 @@
 .idea
-cmake-build-*
+cmake-build*
 builds
 include-static
 include-shared

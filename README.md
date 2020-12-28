@@ -2,7 +2,7 @@
   <img src="https://i.ibb.co/41pL50L/Group-1.png" width="400" alt="logo">
 </p>
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.3-b.svg" alt="version">
+  <img src="https://img.shields.io/badge/version-2.0.0-b.svg" alt="version">
 </p>
 
 ### About
@@ -11,10 +11,9 @@ Cross-platform flexible autocomplete library for your CLI applications
 <img src="https://s7.gifyu.com/images/example3316d0de48f02022.gif" alt="example gif" width="500">
 
 ### Features
-- Cross-platform: `macOS`, `Linux`, `Windows`
+- Cross-platform: `MacOS`, `Linux`, `Windows`
 - Write your own autocomplete rules
 - Setup your own highlight colors
-- Required `C++17`
 - `single header` version of the library
 - `static` and `dynamic` versions of the library
 
@@ -43,35 +42,45 @@ git
 ```
 
 ### Simple Example
-> More complex example with: `color settings`, `handling optional values` and `line title configuration` [you will find here](example/main.cpp)
+> More complex example with: `color settings`, `handling optional values` and `line title configuration` [you will find here](examples/default_input.c)
 ```cpp
-#include <iostream>
-#include <string>
+#include <stdio.h>
 
 #include "../include/autocomplete.h"
 
 int main() {
-    std::string config_file_path = "../config.txt";
-  
-    auto [dict, status, message] = parse_config_file(config_file_path);
+    // Parsing the configuration file
+    Tree* rules = tree_create("../config.txt");
 
-    if (status) {
-        while (true) {
-            std::cerr << "Attention! Please run the executable file only" << std::endl
-                      << "through the command line!\n\n";
-            
-            std::cerr << "- To switch the prompts press UP or DOWN arrow." << std::endl;
-            std::cerr << "- To move cursor press LEFT or RIGHT arrow." << std::endl;
-            std::cerr << "- To edit input press DELETE or BACKSPACE key." << std::endl;
-            std::cerr << "- To apply current prompt press TAB key.\n\n";
+    fprintf(
+        stderr,
+        "Attention! Please run the executable file only\n"
+        "           through the command line!\n\n"
 
-            std::string command = input(dict);
-            std::cout << std::endl << command << std::endl << std::endl;
+        "- To switch the prompts press UP or DOWN arrow.\n"
+        "- To move cursor press LEFT or RIGHT arrow.\n"
+        "- To edit input press DELETE or BACKSPACE key.\n"
+        "- To apply current prompt press TAB key.\n\n"
+    );
+
+    // Listening process
+    while (1) {
+        // Get user input
+        char* str = input(rules);
+        printf("\n%s\n", str);
+
+        // Stop listening if user need
+        if (strcmp(str, "") == 0) {
+            free(str);
+            break;
         }
+
+        // Free user input string
+        free(str);
     }
-    else {
-        std::cerr << message << std::endl;
-    }
+
+    // Free rules
+    tree_free(rules);
 
     return 0;
 }
@@ -102,36 +111,36 @@ custom_example.exe
 
 ### Linking a dynamic library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.3-dynamic)
 
-##### Posix
+##### Unix
 ```bash
-g++ -std=c++17 -o <executable> <paths/of/source/files> -L<path/to/shared/lib/link(.a)/folder> -I<path/to/include/folder> -lcliac -Wl,-rpath,<path/to/shared/lib/folder>
+gcc -o <executable> <paths/of/source/files> -L<path/to/shared/lib/link(.a)/folder> -I<path/to/include/folder> -lcliac -Wl,-rpath,<path/to/shared/lib/folder>
 ```
 
 ##### Windows MSVC from VS Command Prompt
 ```cmd
-cl /EHsc /std:c++17 <paths/of/source/files> /Fe<executable>.exe /I <path/to/include> /link <path/to/shared/lib>
+cl /EHsc <paths/of/source/files> /Fe<executable>.exe /I <path/to/include> /link <path/to/shared/lib>
 ```
 
 ##### Windows MinGW
 ```cmd
-g++ -std=c++17 -o <executable>.exe <paths/of/source/files> -L<path/to/shared/lib/link(.a)> -I<path/to/include> -lcliac
+gcc -o <executable>.exe <paths/of/source/files> -L<path/to/shared/lib/link(.a)> -I<path/to/include> -lcliac
 ```
 
 ### Linking a static library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.3-static)
 
-##### Posix         
+##### Unix         
 ```bash
-g++ -std=c++17 -o <executable> <paths/of/source/files> -L<path/to/static/lib/folder> -I<path/to/include> -lcliac
+gcc -o <executable> <paths/of/source/files> -L<path/to/static/lib/folder> -I<path/to/include> -lcliac
 ```
 
 ##### Windows MSVC from VS Command Prompt
 ```cmd
-cl /EHsc /std:c++17 /DBUILD_STATIC <paths/of/source/files> /Fe<executable>.exe /I <path/to/include/folder> /link <path/to/static/lib/foleder>
+cl /EHsc <paths/of/source/files> /Fe<executable>.exe /I <path/to/include/folder> /link <path/to/static/lib/foleder>
 ```
 
 ##### Windows MinGW
 ```cmd
-g++ -std=c++17 -DBUILD_STATIC -o <executable>.exe <paths/of/source/files> -L<path/to/static/lib/folder> -I<path/to/include/folder> -lcliac
+g++ -o <executable>.exe <paths/of/source/files> -L<path/to/static/lib/folder> -I<path/to/include/folder> -lcliac
 ```
 
 ### About changes
