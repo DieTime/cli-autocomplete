@@ -113,7 +113,7 @@ Predictions *predictions_create(Tree *rules, char *input, char *optional_bracket
             char* last_token = (char*)vector_get(tokens, tokens->length - 1);
 
             if (strncmp(last_token, probably_token, strlen(last_token)) == 0) {
-                vector_push(pred->tokens, token_create(probably_token, strlen(probably_token)));
+                vector_push(pred->tokens, token_create(probably_token, (unsigned int) strlen(probably_token)));
             }
         }
     }
@@ -148,7 +148,7 @@ Predictions *predictions_create(Tree *rules, char *input, char *optional_bracket
             // Adding a word to predictions
             // if there are less than 2 misses
             if (miss < 2) {
-                vector_push(pred->tokens, token_create(probably_token, strlen(probably_token)));
+                vector_push(pred->tokens, token_create(probably_token, (unsigned int)strlen(probably_token)));
             }
         }
 

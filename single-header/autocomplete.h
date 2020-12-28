@@ -340,7 +340,7 @@ char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE 
     // Initialize buffer for reading
     short buff_len = 0;
     short buff_cap = terminal_width();
-    char* buff = (char*)calloc(buff_cap, sizeof(char));
+    char* buff = (char*)calloc((size_t)buff_cap, sizeof(char));
     if (buff == NULL) {
         fprintf(stderr, "[ERROR] Couldn't allocate memory for buffer\n");
         exit(1);
@@ -419,7 +419,7 @@ char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE 
         else if (ch == BACKSPACE) {
             if (buff_len != 0 && buff_len - offset >= 1) {
                 // Delete character from buffer
-                for (unsigned i = buff_len - offset - 1; i < buff_cap - 1; i++) {
+                for (unsigned i = (unsigned int)(buff_len - offset - 1); i < buff_cap - 1; i++) {
                     buff[i] = buff[i + 1];
                 }
                 buff_len -= 1;
@@ -430,7 +430,7 @@ char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE 
         else if (ch == TAB) {
             if (pred->type != FAILURE) {
                 char* prediction = (char*)vector_get(pred->tokens, hint_num % pred->tokens->length);
-                unsigned predict_len = strlen(prediction);
+                unsigned predict_len = (unsigned int)strlen(prediction);
 
                 // Make sure the candidate has no optional brackets
                 if (!contain_chars(prediction, optional_brackets)) {
@@ -448,7 +448,7 @@ char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE 
                     }
 
                     // Fix buffer length
-                    buff_len = (short)(buff_len - space_offset);
+                    buff_len = buff_len - space_offset;
 
                     // Append end characters to buffer
                     buff[buff_len++] = ' ';
@@ -494,7 +494,7 @@ char* custom_input(Tree* rules, char* title, COLOR_TYPE title_color, COLOR_TYPE 
                 {
                     if (buff_len != 0 && offset != 0) {
                         // Delete character from buffer
-                        for (unsigned i = buff_len - offset; i < buff_cap - 1; i++) {
+                        for (unsigned i = (unsigned int)(buff_len - offset); i < buff_cap - 1; i++) {
                             buff[i] = buff[i + 1];
                         }
                         buff_len -= 1;
@@ -691,7 +691,7 @@ Predictions *predictions_create(Tree *rules, char *input, char *optional_bracket
             char* last_token = (char*)vector_get(tokens, tokens->length - 1);
 
             if (strncmp(last_token, probably_token, strlen(last_token)) == 0) {
-                vector_push(pred->tokens, token_create(probably_token, strlen(probably_token)));
+                vector_push(pred->tokens, token_create(probably_token, (unsigned int)strlen(probably_token)));
             }
         }
     }
@@ -726,7 +726,7 @@ Predictions *predictions_create(Tree *rules, char *input, char *optional_bracket
             // Adding a word to predictions
             // if there are less than 2 misses
             if (miss < 2) {
-                vector_push(pred->tokens, token_create(probably_token, strlen(probably_token)));
+                vector_push(pred->tokens, token_create(probably_token, (unsigned int)strlen(probably_token)));
             }
         }
 
