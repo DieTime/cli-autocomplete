@@ -1,5 +1,8 @@
 @echo off
 
+rmdir ..\builds\libs\shared\mingw /s /q
+rmdir ..\builds\libs\static\mingw /s /q
+
 mkdir ..\builds\libs\shared\mingw\x64
 mkdir ..\builds\libs\static\mingw\x64
 

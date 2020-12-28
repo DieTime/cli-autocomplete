@@ -1,5 +1,8 @@
 @echo off
 
+rmdir ..\builds\libs\shared\msvc /s /q
+rmdir ..\builds\libs\static\msvc /s /q
+
 mkdir ..\builds\libs\shared\msvc\x64
 mkdir ..\builds\libs\static\msvc\x64
 
