@@ -1,4 +1,3 @@
-#pragma once
 #ifndef AUTOCOMPLETE_TERMINAL_H
 #define AUTOCOMPLETE_TERMINAL_H
 
@@ -10,12 +9,10 @@
     #ifndef OS_WINDOWS
         #define OS_WINDOWS
         #define COLOR_TYPE uint16_t
-        #if defined(BUILD_STATIC)
-            #define LIB
-        #elif defined(BUILD_SHARED)
+        #if defined(BUILD_SHARED)
             #define LIB extern __declspec(dllexport)
         #else
-            #define LIB extern __declspec(dllimport)
+            #define LIB
         #endif
 
         #include <windows.h>

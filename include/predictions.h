@@ -1,14 +1,11 @@
-#pragma once
 #ifndef AUTOCOMPLETE_PREDICTIONS_H
 #define AUTOCOMPLETE_PREDICTIONS_H
 
 #if defined(_WIN32) || defined(_WIN64)
-    #if defined(BUILD_STATIC)
-        #define LIB
-    #elif defined(BUILD_SHARED)
+    #if defined(BUILD_SHARED)
         #define LIB extern __declspec(dllexport)
     #else
-        #define LIB extern __declspec(dllimport)
+        #define LIB
     #endif
 #elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
     #define LIB extern __attribute__((visibility("default")))

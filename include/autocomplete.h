@@ -1,4 +1,3 @@
-#pragma once
 #ifndef AUTOCOMPLETE_AUTOCOMPLETE_H
 #define AUTOCOMPLETE_AUTOCOMPLETE_H
 
@@ -10,12 +9,10 @@
 #if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN64)
     #ifndef OS_WINDOWS
         #define OS_WINDOWS
-        #if defined(BUILD_STATIC)
-            #define LIB
-        #elif defined(BUILD_SHARED)
+        #if defined(BUILD_SHARED)
             #define LIB extern __declspec(dllexport)
         #else
-            #define LIB extern __declspec(dllimport)
+            #define LIB
         #endif
     #endif
 #elif defined(unix) || defined(__unix__) || defined(__unix)

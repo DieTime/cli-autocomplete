@@ -5,6 +5,7 @@ set(CMAKE_C_STANDARD 99)
 
 file(GLOB_RECURSE SOURCES src/*.c)
 file(GLOB_RECURSE INCLUDE include/*.h)
+
 set(EXAMPLE_1 examples/default_input.c)
 set(EXAMPLE_2 examples/custom_input.c)
 

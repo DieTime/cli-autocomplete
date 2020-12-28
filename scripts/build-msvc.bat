@@ -16,7 +16,7 @@ del "*.obj" /s /q
 del "*.exp" /s /q
 
 echo Build x86 static library ...
-cl /EHsc /c /DBUILD_STATIC ..\src\*.c /I..\include\
+cl /EHsc /c ..\src\*.c /I..\include\
 lib *.obj /OUT:libcliac.lib
 xcopy /e /i /y "*.lib" ..\builds\libs\static\msvc\ 
 del "*.lib" /s /q
@@ -35,12 +35,12 @@ del "*.obj" /s /q
 del "*.exp" /s /q
 
 echo Build x64 static library ...
-cl /EHsc /c /DBUILD_STATIC ..\src\*.c /I..\include\
+cl /EHsc /c ..\src\*.c /I..\include\
 lib *.obj /OUT:libcliac.lib
 xcopy /e /i /y "*.lib" ..\builds\libs\static\msvc\x64 
 del "*.lib" /s /q
 del "*.obj" /s /q
 
 echo Copy include directory ...
-xcopy /e /i /y ..\include ..\builds\libs\shared\msvc\include
-xcopy /e /i /y ..\include ..\builds\libs\static\msvc\include
+xcopy /e /i /y ..\include-shared ..\builds\libs\shared\msvc\include
+xcopy /e /i /y ..\include-static ..\builds\libs\static\msvc\include
