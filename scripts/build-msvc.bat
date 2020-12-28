@@ -1,5 +1,8 @@
 @echo off
 
+mkdir ..\builds\libs\shared\msvc\x64
+mkdir ..\builds\libs\static\msvc\x64
+
 @call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86 %*
 
 echo Build x86 shared library ...

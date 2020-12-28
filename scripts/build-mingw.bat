@@ -1,5 +1,8 @@
 @echo off
 
+mkdir ..\builds\libs\shared\mingw\x64
+mkdir ..\builds\libs\static\mingw\x64
+
 echo Build x86 shared library ...
 gcc86 -shared -m32 -DBUILD_SHARED ..\src\*.c -o ..\builds\libs\shared\mingw\libcliac.dll -Wl,-out-implib,..\builds\libs\shared\mingw\libcliac.a
 
