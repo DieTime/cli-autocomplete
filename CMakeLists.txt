@@ -13,8 +13,9 @@ if (MSVC)
 elseif(MINGW)
     set(DIR_NAME mingw)
 elseif(UNIX)
-    set(DIR_NAME unix)
+    set(DIR_NAME unix/Release)
 endif ()
+
 
 add_executable(default_example ${EXAMPLE_DEFAULT} ${SOURCES})
 add_executable(custom_example ${EXAMPLE_CUSTOM} ${SOURCES})

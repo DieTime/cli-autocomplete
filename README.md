@@ -87,15 +87,17 @@ cmake --build ./cmake-build --config Release
 
 ----------------------- RUN EXAMPLE ---------------------
 
-cd example/Release/
-./example            # Posix
-example.exe          # Windows
+# Unix
+cd builds/examples/unix/Release
+./custom_example
 
----------------------- OR RUN TESTS ---------------------
+# MinGW
+cd builds/examples/mingw/Release
+custom_example.exe
 
-cd tests/Release/
-./tests              # Posix
-tests.exe            # Windows
+# MSVC
+cd builds/examples/msvc/Release
+custom_example.exe
 ```
 
 ### Linking a dynamic library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.3-dynamic)
