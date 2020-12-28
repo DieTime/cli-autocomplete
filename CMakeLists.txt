@@ -14,8 +14,6 @@ add_executable(custom ${EXAMPLE_2} ${SOURCES} ${INCLUDE})
 
 set_target_properties(default PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/examples/${DIR_NAME}")
-target_compile_options(default PRIVATE -DBUILD_STATIC)
 
 set_target_properties(custom PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builds/examples/${DIR_NAME}")
-target_compile_options(custom PRIVATE -DBUILD_STATIC)
