@@ -36,7 +36,7 @@ git
         user.email
             "[email]"
     init
-        [repository name]
+        [repository_name]
     clone
         [url]
 ```
