@@ -109,7 +109,7 @@ cd builds/examples/msvc/Release
 custom_example.exe
 ```
 
-### Linking a dynamic library [[Releases]]()
+### Linking a shared library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v2.0.0-shared)
 
 ##### Unix
 ```bash
@@ -126,7 +126,7 @@ cl /EHsc <paths/of/source/files> /Fe<executable>.exe /I<path/to/include/folder> 
 gcc -o <executable>.exe <paths/of/source/files> -L<path/to/shared/lib/folder> -I<path/to/include/folder> -lcliac
 ```
 
-### Linking a static library [[Releases]]()
+### Linking a static library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v2.0.0-static)
 
 ##### Unix
 ```bash
