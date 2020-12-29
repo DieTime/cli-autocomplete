@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.0] - 2020-12-29 [[xxxxxxx]]()
+## [2.0.0] - 2020-12-29 [[62f1244]](https://github.com/DieTime/CLI-Autocomplete/commit/62f1244)
 
 ### Fixed
 
