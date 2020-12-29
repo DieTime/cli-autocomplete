@@ -3,3 +3,4 @@ cmake-build*
 builds
 include-static
 include-shared
+scripts
