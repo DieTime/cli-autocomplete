@@ -42,7 +42,7 @@ git
 ```
 
 ### Simple Example
-> More complex example with: `color settings`, `handling optional values` and `line title configuration` [you will find here](examples/default_input.c)
+> More complex example with: `color settings`, `handling optional values` and `line title configuration` [you will find here](examples/custom_input.c)
 ```cpp
 #include <stdio.h>
 
@@ -50,7 +50,7 @@ git
 
 int main() {
     // Parsing the configuration file
-    Tree* rules = tree_create("../config.txt");
+    Tree* rules = tree_create("../example.config");
 
     fprintf(
         stderr,
@@ -109,38 +109,38 @@ cd builds/examples/msvc/Release
 custom_example.exe
 ```
 
-### Linking a dynamic library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.3-dynamic)
+### Linking a dynamic library [[Releases]]()
 
 ##### Unix
 ```bash
-gcc -o <executable> <paths/of/source/files> -L<path/to/shared/lib/link(.a)/folder> -I<path/to/include/folder> -lcliac -Wl,-rpath,<path/to/shared/lib/folder>
+gcc -o <executable> <paths/of/source/files> -L<path/to/shared/lib/folder> -I<path/to/include/folder> -lcliac -Wl,-rpath,<path/to/shared/lib/folder>
 ```
 
 ##### Windows MSVC from VS Command Prompt
 ```cmd
-cl /EHsc <paths/of/source/files> /Fe<executable>.exe /I <path/to/include> /link <path/to/shared/lib>
+cl /EHsc <paths/of/source/files> /Fe<executable>.exe /I<path/to/include/folder> /link <path/to/shared/lib/file(.lib)>
 ```
 
 ##### Windows MinGW
 ```cmd
-gcc -o <executable>.exe <paths/of/source/files> -L<path/to/shared/lib/link(.a)> -I<path/to/include> -lcliac
+gcc -o <executable>.exe <paths/of/source/files> -L<path/to/shared/lib/folder> -I<path/to/include/folder> -lcliac
 ```
 
-### Linking a static library [[Releases]](https://github.com/DieTime/CLI-Autocomplete/releases/tag/v1.0.3-static)
+### Linking a static library [[Releases]]()
 
-##### Unix         
+##### Unix
 ```bash
-gcc -o <executable> <paths/of/source/files> -L<path/to/static/lib/folder> -I<path/to/include> -lcliac
+gcc -o <executable> <paths/of/source/files> -L<path/to/static/lib/folder> -I<path/to/include/folder> -lcliac
 ```
 
 ##### Windows MSVC from VS Command Prompt
 ```cmd
-cl /EHsc <paths/of/source/files> /Fe<executable>.exe /I <path/to/include/folder> /link <path/to/static/lib/foleder>
+cl /EHsc <paths/of/source/files> /Fe<executable>.exe /I<path/to/include/folder> /link <path/to/static/lib/file(.lib)>
 ```
 
 ##### Windows MinGW
 ```cmd
-g++ -o <executable>.exe <paths/of/source/files> -L<path/to/static/lib/folder> -I<path/to/include/folder> -lcliac
+gcc -o <executable>.exe <paths/of/source/files> -L<path/to/static/lib/folder> -I<path/to/include/folder> -lcliac
 ```
 
 ### About changes
