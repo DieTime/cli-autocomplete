@@ -3,13 +3,13 @@
 
 #include "node.h"
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN64)
     #if defined(BUILD_SHARED)
         #define LIB extern __declspec(dllexport)
     #else
         #define LIB
     #endif
-#elif defined(__APPLE__) || defined(__unix__) || defined(__unix)
+#elif defined(__APPLE__) || defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__)
     #define LIB extern __attribute__((visibility("default")))
 #else
     #error unsupported platform

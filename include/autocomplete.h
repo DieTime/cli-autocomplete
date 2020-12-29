@@ -15,7 +15,7 @@
             #define LIB
         #endif
     #endif
-#elif defined(unix) || defined(__unix__) || defined(__unix)
+#elif defined(__APPLE__) || defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__)
     #ifndef OS_UNIX
         #define OS_UNIX
         #define LIB extern __attribute__((visibility("default")))

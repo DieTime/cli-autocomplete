@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2020-12-30 [[xxxxxxx]](https://github.com/DieTime/CLI-Autocomplete/commit/xxxxxxx)
+
+### Fixed
+
+- MacOS preprocessor directive. `version 2.0.0 did not compile on macOS`
+
+
 ## [2.0.0] - 2020-12-29 [[62f1244]](https://github.com/DieTime/CLI-Autocomplete/commit/62f1244)
 
 ### Fixed

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#if defined(_WIN32) || defined(__CYGWIN__)
+#if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN64)
     #ifndef OS_WINDOWS
         #define OS_WINDOWS
         #define COLOR_TYPE uint16_t
@@ -18,7 +18,7 @@
         #include <windows.h>
         #include <conio.h>
     #endif
-#elif defined(unix) || defined(__unix__) || defined(__unix)
+#elif defined(__APPLE__) || defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__)
     #ifndef OS_UNIX
         #define OS_UNIX
         #define COLOR_TYPE char*
