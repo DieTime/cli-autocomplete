@@ -149,7 +149,7 @@ gcc -o <executable>.exe <paths/of/source/files> -L<path/to/static/lib/folder> -I
 ### Support the author
 You can support me so that there will be more good open source projects in the future
 <p align="center" style="padding: 10px 0 20px 0">
-  <a href="https://www.buymeacoffee.com/roniemartinez" target="_blank">
+  <a href="https://www.buymeacoffee.com/glazzkoff" target="_blank">
     <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="50" width="220">
   </a>
 </p>
