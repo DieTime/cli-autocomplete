@@ -7,8 +7,8 @@
 
 ### About
 Cross-platform flexible autocomplete library for your CLI applications
-  
-<img src="https://s7.gifyu.com/images/example3316d0de48f02022.gif" alt="example gif" width="500">
+
+<img src="assets/preview.gif" alt="preview gif" width="500">
 
 ### Features
 - Cross-platform: `MacOS`, `Linux`, `Windows`
@@ -91,7 +91,7 @@ int main() {
 git clone https://github.com/DieTime/CLI-AutoComplete.git
 cd CLI-AutoComplete/
 
-cmake -DCMAKE_BUILD_TYPE=Release -S . -B ./cmake-build 
+cmake -DCMAKE_BUILD_TYPE=Release -S . -B ./cmake-build
 cmake --build ./cmake-build --config Release
 
 ----------------------- RUN EXAMPLE ---------------------
